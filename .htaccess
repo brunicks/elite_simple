@@ -1,0 +1,13 @@
+# .htaccess - Redirecionar para a pasta public
+
+RewriteEngine On
+
+# Caso especial: se acessar /simple/ diretamente, redirecionar para /simple/public/
+RewriteCond %{REQUEST_URI} ^/simple/?$
+RewriteRule ^.*$ /simple/public/ [R=301,L]
+
+# Redirecionar tudo que não for public/ para public/
+RewriteCond %{REQUEST_URI} !^/simple/public/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ public/$1 [L]
