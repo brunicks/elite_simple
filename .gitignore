@@ -1,0 +1,15 @@
+# Uploads (arquivos grandes)
+public/uploads/cars/*
+public/uploads/users/*
+public/uploads/temp/*
+!public/uploads/*/.htaccess
+
+# Configurações pessoais
+.env*
+*.local.*
+
+# Sistema/Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
