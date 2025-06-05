@@ -7,14 +7,13 @@ error_log("Router.php - REQUEST_URI: " . $_SERVER['REQUEST_URI']);
 // Verificar se é um arquivo estático (CSS, JS, imagens, etc.)
 $requestUri = $_SERVER['REQUEST_URI'];
 $parsedUrl = parse_url($requestUri);
-$path = $parsedUrl['path'];
+$path = $parsedUrl['path'] ?? '/';
 
-// Remover barras duplas e normalizar o caminho
-$path = preg_replace('#/+#', '/', $path);
-
-// Se o caminho não começa com /assets, mas o REQUEST_URI sim, manter /assets
-if (strpos($_SERVER['REQUEST_URI'], '/assets/') !== false && strpos($path, '/assets/') === false) {
-    $path = '/assets' . $path;
+// Normalizar barras duplas mas preservar o conteúdo do path
+$path = preg_replace('#^/+#', '/', $path); // Remove barras extras no início
+$path = preg_replace('#/+$#', '', $path);  // Remove barras extras no final
+if (empty($path)) {
+    $path = '/';
 }
 
 // Caminho do arquivo no sistema

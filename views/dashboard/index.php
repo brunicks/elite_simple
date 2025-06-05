@@ -115,7 +115,7 @@ include_once ROOT . '/views/layouts/header.php';
             <?php endif; ?>
         </div>    </main>
 
-    <script src="<?= BASE_URL ?>js/script.js"></script>
+    <script src="<?= BASE_URL ?>assets/js/main.js"></script>
     <script>
         <?php if (!$is_admin): ?>
         // Função para toggle de favoritos (usuários logados comuns)

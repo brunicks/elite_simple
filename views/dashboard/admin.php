@@ -531,6 +531,6 @@ include_once ROOT . '/views/layouts/header.php';
     </div>
 </main>
 
-<script src="<?= BASE_URL ?>js/script.js"></script>
+<script src="<?= BASE_URL ?>assets/js/main.js"></script>
 
 <?php include_once ROOT . '/views/layouts/footer.php'; ?>

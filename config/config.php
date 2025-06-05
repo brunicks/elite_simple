@@ -34,8 +34,20 @@ $isHttps = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
            || (strpos($_SERVER['HTTP_HOST'] ?? '', 'ngrok') !== false); // Força HTTPS para ngrok
 
 $protocol = $isHttps ? 'https://' : 'http://';
-$path = rtrim(dirname($_SERVER['SCRIPT_NAME'] ?? ''), '/') . '/';
-define('BASE_URL', $protocol . $_SERVER['HTTP_HOST'] . $path);
+$host = $_SERVER['HTTP_HOST'] ?? 'localhost:8080'; // Fallback para servidor PHP embutido
+
+// Detecção específica para servidor PHP embutido
+$isBuiltInServer = isset($_SERVER['SERVER_SOFTWARE']) && strpos($_SERVER['SERVER_SOFTWARE'], 'Development Server') !== false;
+
+if ($isBuiltInServer) {
+    // Para servidor PHP embutido, usar path vazio (já que o document root é /public)
+    $path = '/';
+} else {
+    // Para Apache/Nginx, usar path normal
+    $path = rtrim(dirname($_SERVER['SCRIPT_NAME'] ?? ''), '/') . '/';
+}
+
+define('BASE_URL', $protocol . $host . $path);
 
 try {
     // Criando conexão PDO

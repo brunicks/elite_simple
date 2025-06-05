@@ -178,12 +178,30 @@ class App {
         }
         exit;
     }
-    
-    public function parseUrl() {
+      public function parseUrl() {
+        // Priorizar $_GET['url'] para compatibilidade com Apache/Nginx
         if (isset($_GET['url'])) {
             $url = filter_var(rtrim($_GET['url'], '/'), FILTER_SANITIZE_URL);
             return $url ? explode('/', $url) : [];
         }
+        
+        // Para servidor PHP embutido, usar REQUEST_URI
+        if (isset($_SERVER['REQUEST_URI'])) {
+            $requestUri = $_SERVER['REQUEST_URI'];
+            $parsedUrl = parse_url($requestUri);
+            $path = $parsedUrl['path'] ?? '/';
+            
+            // Remover trailing slash e normalizar
+            $path = rtrim($path, '/');
+            if (empty($path) || $path === '/') {
+                return [];
+            }
+            
+            // Remover leading slash e dividir em partes
+            $path = ltrim($path, '/');
+            return $path ? explode('/', $path) : [];
+        }
+        
         return [];
     }
 }
