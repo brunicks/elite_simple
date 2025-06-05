@@ -9,13 +9,19 @@ class User extends Model {    // Buscar usuário por email (apenas ativos)
         $stmt->execute([$email]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
-    
-    // Buscar usuário por email (incluindo inativos - para admin)
+      // Buscar usuário por email (incluindo inativos - para admin)
     public function findByEmailWithInactive($email) {
         $stmt = $this->db->prepare("SELECT * FROM usuarios WHERE email = ?");
         $stmt->execute([$email]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
-    }      // Criar novo usuário (always active by default)
+    }
+    
+    // Buscar usuário por email (método público - alias para findByEmail)
+    public function getUserByEmail($email) {
+        return $this->findByEmail($email);
+    }
+    
+    // Criar novo usuário (always active by default)
     public function create($data) {
         // Verificar se a senha precisa ser hasheada (segurança adicional)
         if (isset($data['senha']) && !$this->isPasswordHashed($data['senha'])) {
@@ -204,6 +210,67 @@ class User extends Model {    // Buscar usuário por email (apenas ativos)
                 WHERE (nome LIKE ? OR email LIKE ?)                ORDER BY created_at DESC";
         $stmt = $this->query($sql, ["%$search%", "%$search%"]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    // ===== MÉTODOS PARA RESET DE SENHA =====
+    
+    // Gerar token de reset de senha
+    public function createPasswordResetToken($email) {
+        $user = $this->findByEmail($email);
+        if (!$user) {
+            return false;
+        }
+        
+        // Gerar token único
+        $token = bin2hex(random_bytes(32));
+        
+        // Token expira em 1 hora
+        $expires = date('Y-m-d H:i:s', strtotime('+1 hour'));
+        
+        $updateData = [
+            'reset_token' => $token,
+            'reset_token_expires' => $expires
+        ];
+        
+        if ($this->update('usuarios', $updateData, $user['id'])) {
+            return $token;
+        }
+        
+        return false;
+    }
+    
+    // Verificar se token de reset é válido
+    public function verifyResetToken($token) {
+        $sql = "SELECT * FROM usuarios 
+                WHERE reset_token = ? 
+                AND reset_token_expires > NOW() 
+                AND ativo = 1";
+        $stmt = $this->query($sql, [$token]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    
+    // Resetar senha usando token
+    public function resetPassword($token, $newPassword) {
+        $user = $this->verifyResetToken($token);
+        if (!$user) {
+            return false;
+        }
+        
+        $updateData = [
+            'senha' => password_hash($newPassword, PASSWORD_DEFAULT),
+            'reset_token' => null,
+            'reset_token_expires' => null
+        ];
+        
+        return $this->update('usuarios', $updateData, $user['id']);
+    }
+    
+    // Limpar tokens expirados (limpeza automática)
+    public function cleanExpiredTokens() {
+        $sql = "UPDATE usuarios 
+                SET reset_token = NULL, reset_token_expires = NULL 
+                WHERE reset_token_expires < NOW()";
+        return $this->query($sql);
     }
 }
 ?>

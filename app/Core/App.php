@@ -33,16 +33,15 @@ class App {
             'dashboard' => ['DashboardController', 'index'],
             'favorite' => ['FavoriteController', 'index']
         ];
-        
-        // Rotas com sub-ações
+          // Rotas com sub-ações
         if ($route === 'auth' && isset($url[1])) {
             $action = $url[1];
-            if (in_array($action, ['login', 'register', 'logout'])) {
+            if (in_array($action, ['login', 'register', 'logout', 'forgot_password', 'request_reset', 'reset_password', 'update_password'])) {
                 $this->controller = 'AuthController';
                 $this->method = $action;
                 $this->params = array_slice($url, 2);
                 return;
-            }        }        // Rota /dashboard - com sub-ações (stats, user, etc.)
+            }        }// Rota /dashboard - com sub-ações (stats, user, etc.)
         if ($route === 'dashboard' && isset($url[1])) {
             $action = $url[1];
             if (in_array($action, ['stats', 'user', 'calculateFinancing', 'saveSimulation', 'deleteSimulation'])) {

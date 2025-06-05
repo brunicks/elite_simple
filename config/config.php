@@ -9,6 +9,7 @@
 
 // Debug mode
 define('DEBUG', true);
+define('DEVELOPMENT', true); // ← Modo de desenvolvimento ativado
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 

@@ -33,6 +33,7 @@ include_once ROOT . '/views/layouts/header.php';
                     </div>
                     
                     <button type="submit" name="login" class="modern-btn modern-btn-primary">Entrar</button>
+                    <a href="<?= BASE_URL ?>auth/forgot_password" class="forgot-password-link">Esqueci minha senha</a>
                 </form>
             </div>
             

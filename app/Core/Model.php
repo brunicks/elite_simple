@@ -35,18 +35,16 @@ class Model {
         $stmt = $this->db->prepare("INSERT INTO {$table} ({$fields}) VALUES ({$placeholders})");
         $stmt->execute($data);
         return $this->db->lastInsertId();
-    }
-    
-    // Atualizar registro
+    }    // Atualizar registro
     public function update($table, $data, $id) {
         $fields = [];
         foreach ($data as $key => $value) {
-            $fields[] = "{$key} = :{$key}";
+            $fields[] = "`{$key}` = :{$key}";
         }
         $fields = implode(', ', $fields);
         
         $data['id'] = $id;
-        $stmt = $this->db->prepare("UPDATE {$table} SET {$fields} WHERE id = :id");
+        $stmt = $this->db->prepare("UPDATE `{$table}` SET {$fields} WHERE id = :id");
         return $stmt->execute($data);
     }
     
