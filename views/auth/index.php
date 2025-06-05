@@ -14,10 +14,9 @@ include_once ROOT . '/views/layouts/header.php';
             <?php if (isset($_SESSION['success'])): ?>
                 <div class="modern-alert modern-alert-success"><?= htmlspecialchars($_SESSION['success']) ?></div>
                 <?php unset($_SESSION['success']); ?>
-            <?php endif; ?>
-              <div class="auth-tabs">
-                <button class="tab-btn active" onclick="showTab('login')"><span>Login</span></button>
-                <button class="tab-btn" onclick="showTab('register')"><span>Cadastrar</span></button>
+            <?php endif; ?>              <div class="auth-tabs">
+                <button class="tab-btn active"><span>Login</span></button>
+                <button class="tab-btn"><span>Cadastrar</span></button>
             </div>
             
             <!-- Formulário de Login -->

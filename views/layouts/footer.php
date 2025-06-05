@@ -147,10 +147,9 @@
             });
             icon.addEventListener('mouseleave', function() {
                 this.style.transform = 'scale(1)';
-            });
-        });
+            });        });
     </script>
 
-    <script src="<?= BASE_URL ?>js/script.js"></script>
+    <script src="<?= BASE_URL ?>assets/js/main.js"></script>
 </body>
 </html>

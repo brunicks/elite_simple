@@ -93,14 +93,13 @@ include_once ROOT . '/views/layouts/header.php';
             <div class="premium-carousel">
                 <div class="carousel-track" id="premiumCarousel">
                     <?php foreach ($cars as $index => $car): ?>
-                        <div class="premium-card">
-                            <div class="card-image">
+                        <div class="premium-card">                            <div class="card-image">
                                 <?php if ($car['imagem']): ?>
-                                    <img src="<?= BASE_URL ?>uploads/<?= htmlspecialchars($car['imagem']) ?>" 
+                                    <img src="<?= BASE_URL ?>uploads/cars/<?= htmlspecialchars($car['imagem']) ?>" 
                                          alt="<?= htmlspecialchars($car['modelo']) ?>"
-                                         onerror="this.src='https://via.placeholder.com/600x400/1a1a1a/ffffff?text=<?= urlencode($car['marca'] . ' ' . $car['modelo']) ?>'">
+                                         onerror="this.src='<?= BASE_URL ?>assets/images/car-placeholder.jpg'">
                                 <?php else: ?>
-                                    <img src="https://via.placeholder.com/600x400/1a1a1a/ffffff?text=<?= urlencode($car['marca'] . ' ' . $car['modelo']) ?>" 
+                                    <img src="<?= BASE_URL ?>assets/images/car-placeholder.jpg" 
                                          alt="<?= htmlspecialchars($car['modelo']) ?>">
                                 <?php endif; ?>
                                 <div class="card-overlay">

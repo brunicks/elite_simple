@@ -10,7 +10,7 @@ include_once ROOT . '/views/layouts/header.php';
         <div class="car-form-header">
             <div class="car-form-title-group">
                 <h1 class="car-form-main-title">
-                    ✏️ Editar Carro
+                     Editar Carro
                 </h1>
                 <p class="car-form-subtitle">
                     Editando: <strong><?= htmlspecialchars($car['marca'] . ' ' . $car['modelo']) ?></strong>
@@ -35,7 +35,7 @@ include_once ROOT . '/views/layouts/header.php';
         <!-- Formulário de edição -->
         <div class="car-form-card">
             <div class="car-form-header">
-                <h2 class="car-form-title">🚗 Dados do Veículo</h2>
+                <h2 class="car-form-title"> Dados do Veículo</h2>
             </div>
             
             <form method="POST" action="<?= BASE_URL ?>car/update/<?= $car['id'] ?>" enctype="multipart/form-data" id="editCarForm" class="car-form">
@@ -152,7 +152,7 @@ include_once ROOT . '/views/layouts/header.php';
                             <div class="car-form-current-image">
                                 <label class="car-form-label">Imagem Atual:</label>
                                 <div class="car-form-image-preview">
-                                    <img src="<?= BASE_URL ?>uploads/<?= htmlspecialchars($car['imagem']) ?>" 
+                                    <img src="<?= BASE_URL ?>uploads/cars/<?= htmlspecialchars($car['imagem']) ?>" 
                                          alt="Imagem atual" 
                                          class="car-form-preview-img">
                                 </div>
