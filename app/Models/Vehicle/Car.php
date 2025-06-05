@@ -3,43 +3,40 @@
 
 require_once APP . '/Core/Model.php';
 
-class Car extends Model {
-      // Buscar todos os carros ativos (soft delete)
+class Car extends Model {    // Buscar todos os carros ativos (soft delete)
     public function getAllCars() {
         $sql = "SELECT * FROM carros WHERE ativo = 1 ORDER BY created_at DESC";
         $stmt = $this->query($sql);
-        return $stmt->fetchAll();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
     // Buscar todos os carros ativos (alias for consistency) - Método faltante
     public function getAllActiveCars() {
         return $this->getAllCars(); // Reusa a lógica existente
     }
-    
-    // Buscar carro por ID (apenas ativos)
+      // Buscar carro por ID (apenas ativos)
     public function getCarById($id) {
         $sql = "SELECT * FROM carros WHERE id = ? AND ativo = 1";
         $stmt = $this->query($sql, [$id]);
-        return $stmt->fetch();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
     
     // Buscar carro por ID (incluindo inativos - para admin)
     public function getCarByIdWithInactive($id) {
         return $this->findById('carros', $id);
     }
-    
-    // Buscar carros com filtro (apenas ativos)
+      // Buscar carros com filtro (apenas ativos)
     public function searchCars($search) {
         $sql = "SELECT * FROM carros WHERE (modelo LIKE ? OR marca LIKE ?) AND ativo = 1 ORDER BY created_at DESC";
         $stmt = $this->query($sql, ["%$search%", "%$search%"]);
-        return $stmt->fetchAll();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
     // Buscar os 5 carros mais caros para o carousel da homepage
     public function getTopExpensiveCars($limit = 5) {
         $sql = "SELECT * FROM carros WHERE ativo = 1 ORDER BY preco DESC LIMIT ?";
         $stmt = $this->query($sql, [$limit]);
-        return $stmt->fetchAll();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
     // Criar novo carro (sempre ativo por padrão)
@@ -69,10 +66,9 @@ class Car extends Model {
         
         // Deletar do banco
         $result = $this->delete('carros', $id);
-        
-        // Deletar imagem se existir
+          // Deletar imagem se existir
         if ($result && $car && $car['imagem']) {
-            $imagePath = PUBLIC_PATH . '/uploads/' . $car['imagem'];
+            $imagePath = PUBLIC_PATH . '/uploads/cars/' . $car['imagem'];
             if (file_exists($imagePath)) {
                 unlink($imagePath);
             }
@@ -99,40 +95,38 @@ class Car extends Model {
     // Contar total de carros (incluindo inativos - para admin)
     public function getTotalCarsWithInactive() {
         return $this->count('carros');
-    }
-    
-    // Buscar todos os carros incluindo inativos (para admin)
+    }    // Buscar todos os carros incluindo inativos (para admin)
     public function getAllCarsWithInactive() {
         $sql = "SELECT * FROM carros ORDER BY ativo DESC, created_at DESC";
         $stmt = $this->query($sql);
-        return $stmt->fetchAll();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
     // Buscar carros com filtro incluindo inativos (para admin)
     public function searchCarsWithInactive($search) {
         $sql = "SELECT * FROM carros WHERE (modelo LIKE ? OR marca LIKE ?) ORDER BY ativo DESC, created_at DESC";
         $stmt = $this->query($sql, ["%$search%", "%$search%"]);
-        return $stmt->fetchAll();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    
-    // Buscar carros por marca (apenas ativos)
+      // Buscar carros por marca (apenas ativos)
     public function getCarsByBrand($marca) {
         $sql = "SELECT * FROM carros WHERE marca = ? AND ativo = 1 ORDER BY created_at DESC";
         $stmt = $this->query($sql, [$marca]);
-        return $stmt->fetchAll();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-      // Buscar carros por faixa de preço (apenas ativos)
+    
+    // Buscar carros por faixa de preço (apenas ativos)
     public function getCarsByPriceRange($minPrice, $maxPrice) {
         $sql = "SELECT * FROM carros WHERE preco BETWEEN ? AND ? AND ativo = 1 ORDER BY preco ASC";
         $stmt = $this->query($sql, [$minPrice, $maxPrice]);
-        return $stmt->fetchAll();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
     // Buscar carros por ano (apenas ativos)
     public function getCarsByYear($year) {
         $sql = "SELECT * FROM carros WHERE ano = ? AND ativo = 1 ORDER BY created_at DESC";
         $stmt = $this->query($sql, [$year]);
-        return $stmt->fetchAll();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
     // Obter estatísticas (apenas carros ativos)
@@ -141,25 +135,23 @@ class Car extends Model {
         
         // Total de carros ativos
         $stats['total'] = $this->getTotalCars();
-        
-        // Preço médio (apenas ativos)
+          // Preço médio (apenas ativos)
         $stmt = $this->query("SELECT AVG(preco) as avg_price FROM carros WHERE ativo = 1");
-        $result = $stmt->fetch();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
         $stats['avg_price'] = $result['avg_price'] ?? 0;
         
         // Carro mais caro (apenas ativos)
         $stmt = $this->query("SELECT MAX(preco) as max_price FROM carros WHERE ativo = 1");
-        $result = $stmt->fetch();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
         $stats['max_price'] = $result['max_price'] ?? 0;
         
         // Carro mais barato (apenas ativos)
         $stmt = $this->query("SELECT MIN(preco) as min_price FROM carros WHERE ativo = 1");
-        $result = $stmt->fetch();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
         $stats['min_price'] = $result['min_price'] ?? 0;
-        
-        // Marcas mais populares (apenas ativos)
+          // Marcas mais populares (apenas ativos)
         $stmt = $this->query("SELECT marca, COUNT(*) as count FROM carros WHERE ativo = 1 GROUP BY marca ORDER BY count DESC LIMIT 5");
-        $stats['popular_brands'] = $stmt->fetchAll();
+        $stats['popular_brands'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
         return $stats;
     }
@@ -176,10 +168,9 @@ class Car extends Model {
             $params[] = "%$search%";
             $params[] = "%$search%";
         }
-        
-        $sql = "SELECT * FROM carros {$whereClause} ORDER BY created_at DESC LIMIT {$perPage} OFFSET {$offset}";
+          $sql = "SELECT * FROM carros {$whereClause} ORDER BY created_at DESC LIMIT {$perPage} OFFSET {$offset}";
         $stmt = $this->query($sql, $params);
-        return $stmt->fetchAll();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
     // Contar carros para paginação (apenas ativos)
@@ -327,10 +318,9 @@ class Car extends Model {
                     break;
             }
         }
-        
-        $sql = "SELECT * FROM carros {$whereClause} {$orderBy} LIMIT {$perPage} OFFSET {$offset}";
+          $sql = "SELECT * FROM carros {$whereClause} {$orderBy} LIMIT {$perPage} OFFSET {$offset}";
         $stmt = $this->query($sql, $params);
-        return $stmt->fetchAll();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
     // Contar carros para paginação avançada (com filtros)
@@ -422,19 +412,18 @@ class Car extends Model {
         $stmt = $this->query($sql);
         return $stmt->fetchAll(PDO::FETCH_COLUMN);
     }
-    
-    // Obter faixas de preços para filtros
+      // Obter faixas de preços para filtros
     public function getPriceRanges() {
         $sql = "SELECT MIN(preco) as min_price, MAX(preco) as max_price FROM carros WHERE ativo = 1";
         $stmt = $this->query($sql);
-        return $stmt->fetch();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
     
     // Obter faixas de anos para filtros
     public function getYearRanges() {
         $sql = "SELECT MIN(ano) as min_year, MAX(ano) as max_year FROM carros WHERE ativo = 1";
         $stmt = $this->query($sql);
-        return $stmt->fetch();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
     
     // ================================
@@ -461,19 +450,18 @@ class Car extends Model {
         $stmt = $this->query($sql);
         return $stmt->fetchAll(PDO::FETCH_COLUMN);
     }
-    
-    // Obter faixas de potência (CV)
+      // Obter faixas de potência (CV)
     public function getPowerRanges() {
         $sql = "SELECT MIN(cv) as min_cv, MAX(cv) as max_cv FROM carros WHERE ativo = 1 AND cv IS NOT NULL";
         $stmt = $this->query($sql);
-        return $stmt->fetch();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
     
     // Obter faixas de consumo
     public function getConsumptionRanges() {
         $sql = "SELECT MIN(consumo_medio) as min_consumption, MAX(consumo_medio) as max_consumption FROM carros WHERE ativo = 1 AND consumo_medio IS NOT NULL";
         $stmt = $this->query($sql);
-        return $stmt->fetch();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
     
     // Buscar carros por especificações técnicas
@@ -520,10 +508,9 @@ class Car extends Model {
             $whereClause .= " AND consumo_medio <= ?";
             $params[] = (float)$specs['consumo_max'];
         }
-        
-        $sql = "SELECT * FROM carros {$whereClause} ORDER BY created_at DESC";
+          $sql = "SELECT * FROM carros {$whereClause} ORDER BY created_at DESC";
         $stmt = $this->query($sql, $params);
-        return $stmt->fetchAll();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
 ?>

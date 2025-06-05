@@ -3,26 +3,34 @@
 
 require_once APP . '/Core/Model.php';
 
-class User extends Model {
-      // Buscar usuário por email (apenas ativos)
+class User extends Model {    // Buscar usuário por email (apenas ativos)
     public function findByEmail($email) {
         $stmt = $this->db->prepare("SELECT * FROM usuarios WHERE email = ? AND ativo = 1");
         $stmt->execute([$email]);
-        return $stmt->fetch();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
     
     // Buscar usuário por email (incluindo inativos - para admin)
     public function findByEmailWithInactive($email) {
         $stmt = $this->db->prepare("SELECT * FROM usuarios WHERE email = ?");
         $stmt->execute([$email]);
-        return $stmt->fetch();
-    }
-      // Criar novo usuário (always active by default)
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }      // Criar novo usuário (always active by default)
     public function create($data) {
-        // Password should already be hashed by controller
+        // Verificar se a senha precisa ser hasheada (segurança adicional)
+        if (isset($data['senha']) && !$this->isPasswordHashed($data['senha'])) {
+            $data['senha'] = password_hash($data['senha'], PASSWORD_DEFAULT);
+        }
+        
         $data['ativo'] = 1; // Garantir que novo usuário seja criado como ativo
         
         return $this->insert('usuarios', $data);
+    }
+    
+    // Verificar se a senha já está hasheada
+    private function isPasswordHashed($password) {
+        // Senhas hasheadas com password_hash() começam com $2y$ (bcrypt)
+        return preg_match('/^\$2[ayb]\$/', $password);
     }
     
     // Verificar credenciais
@@ -34,12 +42,11 @@ class User extends Model {
         }
         
         return false;
-    }
-      // Verificar se email já existe (apenas usuários ativos)
+    }    // Verificar se email já existe (apenas usuários ativos)
     public function emailExists($email) {
         $stmt = $this->db->prepare("SELECT COUNT(*) as count FROM usuarios WHERE email = ? AND ativo = 1");
         $stmt->execute([$email]);
-        $result = $stmt->fetch();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result['count'] > 0;
     }
     
@@ -47,7 +54,7 @@ class User extends Model {
     public function emailExistsWithInactive($email) {
         $stmt = $this->db->prepare("SELECT COUNT(*) as count FROM usuarios WHERE email = ?");
         $stmt->execute([$email]);
-        $result = $stmt->fetch();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result['count'] > 0;
     }
     
@@ -61,12 +68,11 @@ class User extends Model {
         }
         
         return $this->update('usuarios', $data, $id);
-    }
-      // Buscar todos os usuários ativos (para admin)
+    }    // Buscar todos os usuários ativos (para admin)
     public function getAllUsers() {
         $sql = "SELECT * FROM usuarios WHERE ativo = 1 ORDER BY created_at DESC";
         $stmt = $this->query($sql);
-        return $stmt->fetchAll();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
     // Buscar todos os usuários (incluindo inativos - para admin)
@@ -74,18 +80,16 @@ class User extends Model {
         $sql = "SELECT *, 
                        CASE WHEN tipo = 'admin' THEN 1 ELSE 0 END as is_admin,
                        ativo as active,
-                       nome as name
-                FROM usuarios 
+                       nome as name                FROM usuarios
                 ORDER BY created_at DESC";
         $stmt = $this->query($sql);
-        return $stmt->fetchAll();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    
-    // Buscar usuário por ID (apenas ativos)
+      // Buscar usuário por ID (apenas ativos)
     public function getUserById($id) {
         $sql = "SELECT * FROM usuarios WHERE id = ? AND ativo = 1";
         $stmt = $this->query($sql, [$id]);
-        return $stmt->fetch();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
     
     // Buscar usuário por ID (incluindo inativos - para admin)
@@ -127,12 +131,11 @@ class User extends Model {
                        ativo as active,
                        nome as name
                 FROM usuarios 
-                $whereClause 
-                ORDER BY created_at DESC 
+                $whereClause                ORDER BY created_at DESC 
                 LIMIT $limit OFFSET $offset";
         
         $stmt = $this->query($sql, $params);
-        return $stmt->fetchAll();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
       // Contar usuários com filtros
     public function countUsersWithFilters($search = '', $role = '', $status = '') {
@@ -160,12 +163,11 @@ class User extends Model {
                 $where[] = "ativo = 0";
             }
         }
-        
-        $whereClause = empty($where) ? '' : 'WHERE ' . implode(' AND ', $where);
+          $whereClause = empty($where) ? '' : 'WHERE ' . implode(' AND ', $where);
         
         $sql = "SELECT COUNT(*) as total FROM usuarios $whereClause";
         $stmt = $this->query($sql, $params);
-        $result = $stmt->fetch();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result['total'];
     }
     
@@ -199,10 +201,9 @@ class User extends Model {
                        ativo as active,
                        nome as name
                 FROM usuarios 
-                WHERE (nome LIKE ? OR email LIKE ?)
-                ORDER BY created_at DESC";
+                WHERE (nome LIKE ? OR email LIKE ?)                ORDER BY created_at DESC";
         $stmt = $this->query($sql, ["%$search%", "%$search%"]);
-        return $stmt->fetchAll();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
 ?>
