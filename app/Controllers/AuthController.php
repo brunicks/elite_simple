@@ -99,12 +99,11 @@ class AuthController extends Controller {
             $_SESSION['error'] = 'Este email já está cadastrado.';
             $this->redirect(BASE_URL);
         }
-        
-        // Criar usuário
+          // Criar usuário
         $userData = [
             'nome' => $nome,
             'email' => $email,
-            'senha' => $senha,
+            'senha' => password_hash($senha, PASSWORD_DEFAULT), // Hash da senha
             'tipo' => 'usuario'
         ];
         

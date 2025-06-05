@@ -8,26 +8,23 @@ class Model {
         global $pdo;
         $this->db = $pdo;
     }
-    
-    // Buscar todos os registros
+      // Buscar todos os registros
     public function findAll($table, $orderBy = 'id DESC') {
         $stmt = $this->db->prepare("SELECT * FROM {$table} ORDER BY {$orderBy}");
         $stmt->execute();
-        return $stmt->fetchAll();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    
-    // Buscar por ID
+      // Buscar por ID
     public function findById($table, $id) {
         $stmt = $this->db->prepare("SELECT * FROM {$table} WHERE id = ?");
         $stmt->execute([$id]);
-        return $stmt->fetch();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
-    
-    // Buscar com condições
+      // Buscar com condições
     public function findWhere($table, $conditions, $params = []) {
         $stmt = $this->db->prepare("SELECT * FROM {$table} WHERE {$conditions}");
         $stmt->execute($params);
-        return $stmt->fetchAll();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
     // Inserir registro

@@ -1,10 +1,29 @@
 <?php
 // app/Core/Controller.php - Controlador base
 
-class Controller {
-    // Carregar modelo
-    public function model($model) {
-        require_once APP . '/Models/' . $model . '.php';
+class Controller {    // Carregar modelo
+    public function model($model) {        // Mapeamento dos modelos organizados por categoria
+        $modelPaths = [
+            'User' => 'Auth/User.php',
+            'Car' => 'Vehicle/Car.php',
+            'Favorite' => 'User/Favorite.php',
+            'RecentlyViewed' => 'User/RecentlyViewed.php',
+            'FinancingSimulation' => 'User/FinancingSimulation.php',
+        ];
+        
+        // Verificar se o modelo está no mapeamento
+        if (isset($modelPaths[$model])) {
+            $modelFile = APP . '/Models/' . $modelPaths[$model];
+        } else {
+            // Fallback para o caminho antigo (para compatibilidade)
+            $modelFile = APP . '/Models/' . $model . '.php';
+        }
+        
+        if (!file_exists($modelFile)) {
+            throw new Exception("Model não encontrado: " . $modelFile);
+        }
+        
+        require_once $modelFile;
         return new $model();
     }
       // Carregar view

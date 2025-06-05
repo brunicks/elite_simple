@@ -132,9 +132,19 @@ class CarController extends Controller {
     }
       // Exibir formulário de editar carro
     public function edit($id) {
-        $this->requireAdmin();
-          // Usar método que pode buscar carros inativos (para admin poder editar)
+        $this->requireAdmin();        // Usar método que pode buscar carros inativos (para admin poder editar)
         $car = $this->carModel->getCarByIdWithInactive($id);
+        
+        // DEBUG: Verificar tipo do retorno
+        if (DEBUG) {
+            error_log("DEBUG CarController::edit - Tipo de car: " . gettype($car));
+            if (is_object($car)) {
+                error_log("DEBUG CarController::edit - Classe: " . get_class($car));
+            }
+            if (is_array($car)) {
+                error_log("DEBUG CarController::edit - Marca: " . ($car['marca'] ?? 'não encontrada'));
+            }
+        }
         
         if (!$car) {
             $_SESSION['error'] = 'Carro não encontrado.';
@@ -223,7 +233,7 @@ class CarController extends Controller {
             
             if ($newImagem) {                // Deletar imagem antiga
                 if ($car['imagem']) {
-                    $oldImagePath = PUBLIC_PATH . '/uploads/' . $car['imagem'];
+                    $oldImagePath = PUBLIC_PATH . '/uploads/cars/' . $car['imagem'];
                     if (file_exists($oldImagePath)) {
                         unlink($oldImagePath);
                     }
@@ -464,14 +474,13 @@ class CarController extends Controller {
         // Validar tamanho (5MB)
         if ($file['size'] > 5 * 1024 * 1024) {
             return false;
-        }
-          // Gerar nome único
+        }          // Gerar nome único
         $newFilename = uniqid() . '.' . $extension;
-        $uploadPath = PUBLIC_PATH . '/uploads/' . $newFilename;
+        $uploadPath = PUBLIC_PATH . '/uploads/cars/' . $newFilename;
         
         // Criar diretório se não existir
-        if (!is_dir(PUBLIC_PATH . '/uploads/')) {
-            mkdir(PUBLIC_PATH . '/uploads/', 0777, true);
+        if (!is_dir(PUBLIC_PATH . '/uploads/cars/')) {
+            mkdir(PUBLIC_PATH . '/uploads/cars/', 0777, true);
         }
         
         // Mover arquivo
