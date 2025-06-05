@@ -117,22 +117,6 @@ INSERT INTO `carros` (`id`, `modelo`, `marca`, `ano`, `preco`, `km`, `imagem`, `
 
 -- --------------------------------------------------------
 
---
--- Estrutura para tabela `car_comparisons`
---
-
-CREATE TABLE `car_comparisons` (
-  `id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `car_id` int(11) NOT NULL,
-  `added_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Estrutura para tabela `favoritos`
---
 
 CREATE TABLE `favoritos` (
   `id` int(11) NOT NULL,
@@ -142,10 +126,6 @@ CREATE TABLE `favoritos` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
-
---
--- Estrutura para tabela `financing_simulations`
---
 
 CREATE TABLE `financing_simulations` (
   `id` int(11) NOT NULL,
@@ -163,11 +143,6 @@ CREATE TABLE `financing_simulations` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
-
---
--- Estrutura para tabela `recently_viewed`
---
-
 CREATE TABLE `recently_viewed` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -176,11 +151,6 @@ CREATE TABLE `recently_viewed` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
-
---
--- Estrutura para tabela `usuarios`
---
-
 CREATE TABLE `usuarios` (
   `id` int(11) NOT NULL,
   `nome` varchar(100) NOT NULL,
@@ -191,53 +161,25 @@ CREATE TABLE `usuarios` (
   `ativo` tinyint(1) NOT NULL DEFAULT 1 COMMENT '1 = Ativo, 0 = Inativo (Soft Delete)'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Despejando dados para a tabela `usuarios`
---
-
 INSERT INTO `usuarios` (`id`, `nome`, `email`, `senha`, `tipo`, `created_at`, `ativo`) VALUES
 (1, 'Administrador', 'admin@concessionaria.com', '$2y$10$gdDgRVjY79SvLP.rHs1.OuS1.M43KZkaPo8xk4cMbovuVmundKB5u', 'admin', '2025-05-29 16:14:59', 1),
 (3, 'bruno', 'brunicks02@gmail.com', '$2y$10$gdDgRVjY79SvLP.rHs1.OuS1.M43KZkaPo8xk4cMbovuVmundKB5u', 'usuario', '2025-05-29 16:26:12', 1);
 
---
--- Índices para tabelas despejadas
---
 
---
--- Índices de tabela `carros`
---
 ALTER TABLE `carros`
   ADD PRIMARY KEY (`id`),
   ADD KEY `idx_ativo` (`ativo`);
 
---
--- Índices de tabela `car_comparisons`
---
-ALTER TABLE `car_comparisons`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `unique_user_car_comparison` (`user_id`,`car_id`),
-  ADD KEY `car_id` (`car_id`),
-  ADD KEY `idx_car_comparisons_user_id` (`user_id`);
-
---
--- Índices de tabela `favoritos`
---
 ALTER TABLE `favoritos`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `unique_favorite` (`usuario_id`,`carro_id`),
   ADD KEY `carro_id` (`carro_id`);
 
---
--- Índices de tabela `financing_simulations`
---
 ALTER TABLE `financing_simulations`
   ADD PRIMARY KEY (`id`),
   ADD KEY `car_id` (`car_id`),
   ADD KEY `idx_financing_user_id` (`user_id`);
 
---
--- Índices de tabela `recently_viewed`
---
 ALTER TABLE `recently_viewed`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `unique_user_car` (`user_id`,`car_id`),
@@ -245,87 +187,43 @@ ALTER TABLE `recently_viewed`
   ADD KEY `idx_recently_viewed_user_id` (`user_id`),
   ADD KEY `idx_recently_viewed_time` (`viewed_at`);
 
---
--- Índices de tabela `usuarios`
---
+
 ALTER TABLE `usuarios`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `email` (`email`),
   ADD KEY `idx_ativo` (`ativo`);
 
---
--- AUTO_INCREMENT para tabelas despejadas
---
 
---
--- AUTO_INCREMENT de tabela `carros`
---
 ALTER TABLE `carros`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
---
--- AUTO_INCREMENT de tabela `car_comparisons`
---
 ALTER TABLE `car_comparisons`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
---
--- AUTO_INCREMENT de tabela `favoritos`
---
+
 ALTER TABLE `favoritos`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
---
--- AUTO_INCREMENT de tabela `financing_simulations`
---
 ALTER TABLE `financing_simulations`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
---
--- AUTO_INCREMENT de tabela `recently_viewed`
---
+
 ALTER TABLE `recently_viewed`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
---
--- AUTO_INCREMENT de tabela `usuarios`
---
 ALTER TABLE `usuarios`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
---
--- Restrições para tabelas despejadas
---
-
---
--- Restrições para tabelas `car_comparisons`
---
-ALTER TABLE `car_comparisons`
-  ADD CONSTRAINT `car_comparisons_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `car_comparisons_ibfk_2` FOREIGN KEY (`car_id`) REFERENCES `carros` (`id`) ON DELETE CASCADE;
-
---
--- Restrições para tabelas `favoritos`
---
 ALTER TABLE `favoritos`
   ADD CONSTRAINT `favoritos_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `favoritos_ibfk_2` FOREIGN KEY (`carro_id`) REFERENCES `carros` (`id`) ON DELETE CASCADE;
 
---
--- Restrições para tabelas `financing_simulations`
---
 ALTER TABLE `financing_simulations`
   ADD CONSTRAINT `financing_simulations_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `financing_simulations_ibfk_2` FOREIGN KEY (`car_id`) REFERENCES `carros` (`id`) ON DELETE SET NULL;
 
---
--- Restrições para tabelas `recently_viewed`
---
 ALTER TABLE `recently_viewed`
   ADD CONSTRAINT `recently_viewed_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `recently_viewed_ibfk_2` FOREIGN KEY (`car_id`) REFERENCES `carros` (`id`) ON DELETE CASCADE;
 COMMIT;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
