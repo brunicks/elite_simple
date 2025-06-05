@@ -1,0 +1,9 @@
+# Pasta para uploads temporários
+Options -ExecCGI -Indexes
+AddHandler cgi-script .php .pl .py .jsp .asp .sh .cgi
+
+# Negar acesso a todos os arquivos temporários
+<FilesMatch ".*">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>

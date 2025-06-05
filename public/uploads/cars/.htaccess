@@ -1,0 +1,15 @@
+# Segurança para uploads de carros
+Options -ExecCGI -Indexes
+AddHandler cgi-script .php .pl .py .jsp .asp .sh .cgi
+
+# Permitir apenas imagens
+<FilesMatch "\.(jpg|jpeg|png|gif|webp)$">
+    Order Allow,Deny
+    Allow from all
+</FilesMatch>
+
+# Bloquear tudo que não for imagem
+<FilesMatch "\.(?!(jpg|jpeg|png|gif|webp)$)[^.]+$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
