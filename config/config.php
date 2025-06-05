@@ -1,22 +1,41 @@
 <?php
-// config.php - Configuração de conexão com banco de dados
+// config.php - Configuração principal do EliteMotors
 
-// Configurações de debug
+/**
+ * ========================================
+ * CONFIGURAÇÕES ESSENCIAIS
+ * ========================================
+ */
+
+// Debug mode
 define('DEBUG', true);
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Configurações do banco de dados
+// Definir caminhos do projeto apenas se não estiverem definidos
+if (!defined('ROOT')) {
+    define('ROOT', dirname(__DIR__));
+}
+if (!defined('APP')) {
+    define('APP', ROOT . '/app');
+}
+
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'concessionaria');
+define('DB_NAME', 'concessionaria2');
 define('DB_USER', 'root');
 define('DB_PASS', '');
-
-// Configuração de charset
 define('DB_CHARSET', 'utf8mb4');
 
-// URLs base
-define('BASE_URL', 'http://localhost/simple/public/');
+// Sistema automático de BASE_URL com detecção HTTPS melhorada
+$isHttps = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') 
+           || (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https')
+           || (!empty($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] === 'on')
+           || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443)
+           || (strpos($_SERVER['HTTP_HOST'] ?? '', 'ngrok') !== false); // Força HTTPS para ngrok
+
+$protocol = $isHttps ? 'https://' : 'http://';
+$path = rtrim(dirname($_SERVER['SCRIPT_NAME'] ?? ''), '/') . '/';
+define('BASE_URL', $protocol . $_SERVER['HTTP_HOST'] . $path);
 
 try {
     // Criando conexão PDO
