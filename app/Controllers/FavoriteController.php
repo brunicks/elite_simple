@@ -2,18 +2,14 @@
 // app/Controllers/FavoriteController.php
 
 require_once APP . '/Core/Controller.php';
-require_once APP . '/Models/Favorite.php';
 
 class FavoriteController extends Controller {
     
-    private $favoriteModel;    public function __construct() {
+    private $favoriteModel;
+
+    public function __construct() {
         $this->favoriteModel = $this->model('Favorite');
-        
-        // Verificar se usuário está logado para operações de favoritos
-        if (!isset($_SESSION['user_id'])) {
-            $_SESSION['error'] = 'Você precisa estar logado para gerenciar favoritos.';
-            $this->redirect(BASE_URL . 'auth');
-        }
+        // Não redirecionar no construtor para permitir resposta JSON em AJAX
     }
     
     /**
@@ -21,25 +17,25 @@ class FavoriteController extends Controller {
      */
     public function toggle() {
         header('Content-Type: application/json');
-        
+        if (!isset($_SESSION['user_id'])) {
+            http_response_code(401);
+            echo json_encode(['success' => false, 'message' => 'Você precisa estar logado para favoritar.']);
+            return;
+        }
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             http_response_code(405);
             echo json_encode(['success' => false, 'message' => 'Método não permitido']);
             return;
         }
-        
         $carId = $_POST['car_id'] ?? null;
         $userId = $_SESSION['user_id'] ?? null;
-        
         if (!$carId || !$userId) {
             http_response_code(400);
             echo json_encode(['success' => false, 'message' => 'Dados inválidos']);
             return;
         }
-        
         try {
             $isFavorite = $this->favoriteModel->isFavorite($userId, $carId);
-            
             if ($isFavorite) {
                 // Remover dos favoritos
                 $result = $this->favoriteModel->removeFromFavorites($userId, $carId);
@@ -51,7 +47,6 @@ class FavoriteController extends Controller {
                 $message = 'Carro adicionado aos favoritos';
                 $action = 'added';
             }
-            
             if ($result) {
                 echo json_encode([
                     'success' => true, 
@@ -62,7 +57,6 @@ class FavoriteController extends Controller {
             } else {
                 echo json_encode(['success' => false, 'message' => 'Erro ao processar favorito']);
             }
-            
         } catch (Exception $e) {
             error_log("Erro ao toggle favorite: " . $e->getMessage());
             http_response_code(500);
