@@ -22,7 +22,7 @@ include_once ROOT . '/views/layouts/header.php';
                     <a href="<?= BASE_URL ?>dashboard/stats" class="btn btn-info" style="background: rgba(255,255,255,0.2); border: 2px solid white;">📊 Ver Estatísticas</a>
                 </div>
             <?php else: ?>
-                <h1>📋 Meu Dashboard Personalizado</h1>
+                <h1> Meu Dashboard Personalizado</h1>
                 <p>Olá, <strong><?= htmlspecialchars($user_name) ?></strong>! Sua área pessoal para explorar carros e gerenciar seus favoritos.</p>                <div style="display: flex; gap: 15px; margin-top: 20px;">
                     <a href="<?= BASE_URL ?>favorite" class="btn btn-primary" style="background: rgba(255,255,255,0.2); border: 2px solid white;">❤️ Ver Meus Favoritos</a>
                     <a href="<?= BASE_URL ?>car" class="btn btn-info" style="background: rgba(255,255,255,0.2); border: 2px solid white;">📋 Catálogo Completo</a>
@@ -61,16 +61,15 @@ include_once ROOT . '/views/layouts/header.php';
                     <div class="car-card <?= ($is_admin && $car['ativo'] == 0) ? 'car-inactive' : '' ?>">
                         <?php if ($is_admin && $car['ativo'] == 0): ?>
                             <div class="inactive-badge">
-                                <span>🚫 DESATIVADO</span>
+                                <span> DESATIVADO</span>
                             </div>
                         <?php endif; ?>
                         
                         <div class="car-image">                            <?php if ($car['imagem']): ?>
-                                <img src="<?= BASE_URL ?>uploads/<?= htmlspecialchars($car['imagem']) ?>" 
-                                     alt="<?= htmlspecialchars($car['modelo']) ?>"
-                                     onerror="this.src='https://via.placeholder.com/300x200?text=Sem+Imagem'">
+                                <img src="<?= BASE_URL ?>uploads/cars/<?= htmlspecialchars($car['imagem']) ?>" 
+                                     alt="<?= htmlspecialchars($car['modelo']) ?>"                                     onerror="this.src='<?= BASE_URL ?>assets/images/car-placeholder.jpg'">
                             <?php else: ?>
-                                <img src="https://via.placeholder.com/300x200?text=Sem+Imagem" 
+                                <img src="<?= BASE_URL ?>assets/images/car-placeholder.jpg" 
                                      alt="Sem imagem">
                             <?php endif; ?>
                         </div>

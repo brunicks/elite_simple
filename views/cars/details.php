@@ -466,11 +466,10 @@ include_once ROOT . '/views/layouts/header.php';
         <div class="car-image-section">
             <div class="car-main-image">
                 <?php if ($car['imagem']): ?>
-                    <img src="<?= BASE_URL ?>uploads/<?= htmlspecialchars($car['imagem']) ?>" 
-                         alt="<?= htmlspecialchars($car['modelo']) ?>"
-                         onerror="this.src='https://via.placeholder.com/800x500?text=Sem+Imagem'">
+                    <img src="<?= BASE_URL ?>uploads/cars/<?= htmlspecialchars($car['imagem']) ?>" 
+                         alt="<?= htmlspecialchars($car['modelo']) ?>"                         onerror="this.src='<?= BASE_URL ?>assets/images/car-placeholder.jpg'">
                 <?php else: ?>
-                    <img src="https://via.placeholder.com/800x500?text=Sem+Imagem" 
+                    <img src="<?= BASE_URL ?>assets/images/car-placeholder.jpg" 
                          alt="Sem imagem">
                 <?php endif; ?>
             </div>

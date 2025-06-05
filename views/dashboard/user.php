@@ -462,12 +462,11 @@ include_once ROOT . '/views/layouts/header.php';
                 <?php foreach ($recently_viewed as $car): ?>
                     <div class="car-mini-card">
                         <?php if ($car['imagem']): ?>
-                            <img src="<?= BASE_URL ?>uploads/<?= htmlspecialchars($car['imagem']) ?>" 
+                            <img src="<?= BASE_URL ?>uploads/cars/<?= htmlspecialchars($car['imagem']) ?>" 
                                  alt="<?= htmlspecialchars($car['modelo']) ?>"
-                                 class="car-mini-image"
-                                 onerror="this.src='https://via.placeholder.com/200x100?text=Sem+Imagem'">
+                                 class="car-mini-image"                                 onerror="this.src='<?= BASE_URL ?>assets/images/car-placeholder.jpg'">
                         <?php else: ?>
-                            <img src="https://via.placeholder.com/200x100?text=Sem+Imagem" 
+                            <img src="<?= BASE_URL ?>assets/images/car-placeholder.jpg" 
                                  alt="Sem imagem" class="car-mini-image">
                         <?php endif; ?>
                         

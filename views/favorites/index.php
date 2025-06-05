@@ -321,10 +321,9 @@ include_once ROOT . '/views/layouts/header.php';
         <div class="favorites-grid">
             <?php foreach ($favorites as $car): ?>
                 <div class="favorite-card">
-                    <div class="favorite-card-image">
-                        <img src="<?= $car['imagem'] ? BASE_URL . 'uploads/' . htmlspecialchars($car['imagem']) : 'https://via.placeholder.com/350x220?text=Sem+Imagem' ?>" 
+                    <div class="favorite-card-image">                        <img src="<?= $car['imagem'] ? BASE_URL . 'uploads/cars/' . htmlspecialchars($car['imagem']) : BASE_URL . 'assets/images/car-placeholder.jpg' ?>" 
                              alt="<?= htmlspecialchars($car['modelo']) ?>"
-                             onerror="this.src='https://via.placeholder.com/350x220?text=Sem+Imagem'">
+                             onerror="this.src='<?= BASE_URL ?>assets/images/car-placeholder.jpg'">
                         
                         <div class="car-year-badge">
                             <?= $car['ano'] ?>

@@ -413,7 +413,7 @@ include_once ROOT . '/views/layouts/header.php';
         <?php unset($_SESSION['success']); ?>
     <?php endif; ?><!-- Admin Panel Header -->
     <div class="admin-panel-header">
-        <h1>🛠️ Painel Administrativo</h1>
+        <h1> Painel Administrativo</h1>
         <p>Bem-vindo, <strong><?= htmlspecialchars($user_name) ?></strong>! Gerencie o estoque completo de veículos da concessionária.</p>
         
         <!-- Quick Actions -->        <div class="admin-quick-actions">
@@ -446,7 +446,7 @@ include_once ROOT . '/views/layouts/header.php';
         <div class="admin-controls-content">
             <!-- Search Form -->
             <div class="search-section">
-                <label for="search">🔍 Buscar Carros:</label>
+                <label for="search"> Buscar Carros:</label>
                 <form method="GET" class="search-form">
                     <input type="hidden" name="filter" value="<?= htmlspecialchars($filter) ?>">
                     <input type="text" id="search" name="search" placeholder="Buscar por modelo, marca..." 
@@ -457,7 +457,7 @@ include_once ROOT . '/views/layouts/header.php';
                 </form>
             </div>            <!-- Filter Controls -->
             <div class="filter-section">
-                <label>📋 Filtrar por Status:</label>
+                <label> Filtrar por Status:</label>
                 <div class="filter-buttons">
                     <a href="<?= BASE_URL ?>dashboard?search=<?= urlencode($search) ?>&filter=all" 
                        class="modern-btn <?= $filter === 'all' ? 'modern-btn-primary' : 'modern-btn-outline' ?>">Todos</a>
@@ -491,11 +491,10 @@ include_once ROOT . '/views/layouts/header.php';
                         </div>
                     <?php endif; ?>
                     
-                    <div class="car-card-image">
-                        <img src="<?= $car['imagem'] ? BASE_URL . 'uploads/' . htmlspecialchars($car['imagem']) : 'https://via.placeholder.com/320x220?text=Sem+Imagem' ?>"
+                    <div class="car-card-image">                        <img src="<?= $car['imagem'] ? BASE_URL . 'uploads/cars/' . htmlspecialchars($car['imagem']) : BASE_URL . 'assets/images/car-placeholder.jpg' ?>"
                              alt="<?= htmlspecialchars($car['modelo']) ?>"
                              class="car-image"
-                             onerror="this.src='https://via.placeholder.com/320x220?text=Sem+Imagem'">
+                             onerror="this.src='<?= BASE_URL ?>assets/images/car-placeholder.jpg'">
                         <div class="car-year-badge">
                             <?= $car['ano'] ?>
                         </div>

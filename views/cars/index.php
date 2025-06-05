@@ -743,21 +743,21 @@ include_once ROOT . '/views/layouts/header.php';
     <!-- Header do Catálogo -->
     <div class="catalog-header">
         <div class="catalog-header-content">
-            <h1 class="catalog-title">🚗 Catálogo Completo</h1>
+            <h1 class="catalog-title"> Catálogo Completo</h1>
             <p class="catalog-subtitle">Explore nossa coleção completa de veículos seminovos de qualidade</p>
             
             <!-- Info de resultados -->
             <div class="catalog-results-info">
                 <?php if (!empty($filters['search']) || !empty($filters['marca']) || !empty($filters['ano_min']) || !empty($filters['preco_min']) || !empty($filters['km_max'])): ?>
                     <p class="results-main">
-                        📊 <strong><?= $total_cars ?></strong> resultado(s) encontrado(s) com filtros aplicados
+                         <strong><?= $total_cars ?></strong> resultado(s) encontrado(s) com filtros aplicados
                     </p>
                     <p class="results-pagination">
                         Página <?= $current_page ?> de <?= $total_pages ?>
                     </p>
                 <?php else: ?>
                     <p class="results-main">
-                        📊 <strong><?= $total_cars ?></strong> veículos disponíveis
+                         <strong><?= $total_cars ?></strong> veículos disponíveis
                     </p>
                     <p class="results-pagination">
                         Página <?= $current_page ?> de <?= $total_pages ?>
@@ -790,9 +790,9 @@ include_once ROOT . '/views/layouts/header.php';
                 <?php endif; ?>
             </button>
         </div>
-          <div id="filtersContainer" class="filters-container" style="display: none;">
+          <div id="filtersContainer" class="filters-container">
             <form method="GET" class="filters-form" id="filtersForm">
-                <h3 class="filters-title">🔍 Filtros de Busca</h3>
+                <h3 class="filters-title"> Filtros de Busca</h3>
                 
                 <div class="filters-grid">
                     <div class="filter-group">
@@ -930,11 +930,10 @@ include_once ROOT . '/views/layouts/header.php';
         <?php else: ?>
             <?php foreach ($cars as $car): ?>
                 <div class="car-card">
-                    <div class="car-card-image">
-                        <img src="<?= $car['imagem'] ? BASE_URL . 'uploads/' . htmlspecialchars($car['imagem']) : 'https://via.placeholder.com/320x220?text=Sem+Imagem' ?>"
+                    <div class="car-card-image">                        <img src="<?= $car['imagem'] ? BASE_URL . 'uploads/cars/' . htmlspecialchars($car['imagem']) : BASE_URL . 'assets/images/car-placeholder.jpg' ?>"
                              alt="<?= htmlspecialchars($car['modelo']) ?>"
                              class="car-image"
-                             onerror="this.src='https://via.placeholder.com/320x220?text=Sem+Imagem'">
+                             onerror="this.src='<?= BASE_URL ?>assets/images/car-placeholder.jpg'">
                         <div class="car-year-badge">
                             <?= $car['ano'] ?>
                         </div>
@@ -963,7 +962,8 @@ include_once ROOT . '/views/layouts/header.php';
                             <a href="<?= BASE_URL ?>car/details/<?= $car['id'] ?>" class="modern-btn modern-btn-primary">
                                 <i class="fas fa-eye"></i> Ver Detalhes
                             </a>
-                            <?php if (isset($_SESSION['user_id'])): ?>                                <button class="modern-btn modern-btn-secondary <?= $car['is_favorite'] ? 'favorited' : '' ?>" 
+                            <?php if (isset($_SESSION['user_id']) && (($_SESSION['user_type'] ?? '') !== 'admin')): ?>
+                                <button class="modern-btn modern-btn-secondary <?= $car['is_favorite'] ? 'favorited' : '' ?>" 
                                         onclick="toggleFavorite(<?= $car['id'] ?>, this)" 
                                         data-car-id="<?= $car['id'] ?>" 
                                         title="<?= $car['is_favorite'] ? 'Remover dos favoritos' : 'Adicionar aos favoritos' ?>">
@@ -1071,7 +1071,7 @@ include_once ROOT . '/views/layouts/header.php';
     <!-- Call to Action -->
     <?php if (!$is_logged_in && !empty($cars)): ?>
         <div class="catalog-cta">
-            <h3 class="cta-title">✨ Gostou de algum veículo?</h3>
+            <h3 class="cta-title"> Gostou de algum veículo?</h3>
             <p class="cta-text">
                 Crie sua conta gratuita para favoritar carros e ter acesso a informações exclusivas!
             </p>
@@ -1083,177 +1083,6 @@ include_once ROOT . '/views/layouts/header.php';
 
 </main>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Collapsible filters functionality
-    const toggleButton = document.getElementById('toggleFilters');
-    const filtersContainer = document.getElementById('filtersContainer');
-    const toggleIcon = document.getElementById('filterToggleIcon');
-    const toggleText = document.getElementById('filterToggleText');
-      if (toggleButton && filtersContainer) {
-        toggleButton.addEventListener('click', function() {
-            const isVisible = filtersContainer.style.display !== 'none';
-            
-            if (isVisible) {
-                // Ocultar filtros
-                filtersContainer.classList.remove('show');
-                setTimeout(() => {
-                    filtersContainer.style.display = 'none';
-                }, 300);
-                toggleIcon.style.transform = 'rotate(0deg)';
-                toggleText.textContent = 'Mostrar Filtros Avançados';
-                toggleButton.classList.remove('active');
-            } else {
-                // Mostrar filtros
-                filtersContainer.style.display = 'block';
-                setTimeout(() => {
-                    filtersContainer.classList.add('show');
-                }, 10);
-                toggleIcon.style.transform = 'rotate(180deg)';
-                toggleText.textContent = 'Ocultar Filtros Avançados';
-                toggleButton.classList.add('active');
-            }
-        });
-    }
-    
-    // Auto-submit when filter changes
-    const filterSelects = document.querySelectorAll('.filter-select');
-    filterSelects.forEach(select => {
-        select.addEventListener('change', function() {
-            this.classList.add('filter-active');
-            // Optional: Auto-submit form when filter changes
-            // this.form.submit();
-        });
-    });
-    
-    // Animations for car cards
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, { threshold: 0.1 });
-    
-    document.querySelectorAll('.car-card').forEach((card, index) => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(30px)';
-        card.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
-        observer.observe(card);
-    });
-});
 
-// Função para toggle de favoritos
-function toggleFavorite(carId, button) {
-    if (!button || button.disabled) return;
-    
-    const originalContent = button.innerHTML;
-    button.disabled = true;
-    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-    
-    fetch('<?= BASE_URL ?>favorite/toggle', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: 'car_id=' + carId
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            if (data.action === 'added') {
-                button.classList.add('favorited');
-                button.title = 'Remover dos favoritos';
-                showToast('Veículo adicionado aos favoritos!', 'success');
-            } else {
-                button.classList.remove('favorited');
-                button.title = 'Adicionar aos favoritos';
-                showToast('Veículo removido dos favoritos!', 'info');
-            }
-        } else {
-            showToast(data.message || 'Erro ao processar favorito', 'error');
-        }
-    })
-    .catch(error => {
-        console.error('Erro:', error);
-        showToast('Erro ao processar favorito', 'error');
-    })
-    .finally(() => {
-        button.disabled = false;
-        button.innerHTML = originalContent;
-    });
-}
-
-// Função para mostrar toast notifications
-function showToast(message, type = 'info') {
-    let toastContainer = document.getElementById('toast-container');
-    if (!toastContainer) {
-        toastContainer = document.createElement('div');
-        toastContainer.id = 'toast-container';
-        toastContainer.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 10000;
-            max-width: 300px;
-        `;
-        document.body.appendChild(toastContainer);
-    }
-    
-    const toast = document.createElement('div');
-    const colors = {
-        success: '#27ae60',
-        error: '#e74c3c',
-        info: '#3498db',
-        warning: '#f39c12'
-    };
-    
-    toast.style.cssText = `
-        background: ${colors[type] || colors.info};
-        color: white;
-        padding: 12px 16px;
-        border-radius: 8px;
-        margin-bottom: 10px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        transform: translateX(100%);
-        transition: transform 0.3s ease;
-        font-size: 0.9rem;
-        font-weight: 500;
-    `;
-    toast.textContent = message;
-    
-    toastContainer.appendChild(toast);
-    
-    // Animar entrada
-    setTimeout(() => {
-        toast.style.transform = 'translateX(0)';
-    }, 10);
-    
-    // Remover após 4 segundos
-    setTimeout(() => {
-        toast.style.transform = 'translateX(100%)';
-        setTimeout(() => {
-            if (toast.parentNode) {
-                toast.parentNode.removeChild(toast);
-            }
-        }, 300);
-    }, 4000);
-}
-
-<?php if (!$is_logged_in): ?>
-// Para usuários não logados
-function showLoginAlert(action) {
-    if (confirm(`Para ${action} carros, você precisa fazer login. Deseja ir para a página de login?`)) {
-        window.location.href = '<?= BASE_URL ?>auth';
-    }
-}
-
-// Sobrescrever funções para usuários não logados
-function toggleFavorite(carId, button) {
-    showLoginAlert('favoritar');
-}
-<?php endif; ?>
-</script>
 
 <?php include_once ROOT . '/views/layouts/footer.php'; ?>
