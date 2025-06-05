@@ -27,7 +27,7 @@ include_once ROOT . '/views/layouts/header.php';
     </div>    <!-- Informações atuais -->
     <div class="user-info-card">
         <div class="user-info-card-header">
-            <h6>
+            <h6 class="text-white">
                 <i class="fas fa-info-circle"></i> Informações Atuais
             </h6>
         </div>
