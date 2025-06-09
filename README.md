@@ -300,26 +300,27 @@ O sistema Elite Motors é auto-documentado com:
 - Validações em tempo real
 
 ## 💰 Custo da Ferramenta
+Análise de Custos de Desenvolvimento
 
-### Análise de Custos de Desenvolvimento
+### Desenvolvimento do Sistema:
+- Desenvolvedor Full Stack: 80h × R$ 80,00 = R$ 6.400,00
+- Desenvolvedor Front-End: 60h × R$ 70,00 = R$ 4.200,00
+- Administrador de Banco de Dados: 40h × R$ 75,00 = R$ 3.000,00
+-  de Qualidade: 20h × R$ 60,00 = R$ 1.200,00
+- Gerente de Projeto: 20h × R$ 85,00 = R$ 1.700,00
+- /UI Designer: 30h × R$ 70,00 = R$ 2.100,00
+- Testes automatizados: 10h × R$ 70,00 = R$ 700,00
+- Ferramentas e Licenças: Custo fixo - R$ 500,00
 
-**Desenvolvimento do Sistema (200 horas de trabalho)**
-- Desenvolvedor Full Stack Principal: 80h × R$ 80/h = R$ 6.400,00
-- Frontend Developer: 60h × R$ 70/h = R$ 4.200,00
-- Database Administrator: 40h × R$ 75/h = R$ 3.000,00
-- Quality Assurance & Documentation: 20h × R$ 60/h = R$ 1.200,00
+### Infraestrutura:
+- Servidor (6 meses): R$ 300,00 × 6 = R$ 1.800,00
+- Backups / Armazenamento extra: R$ 100,00
+- Manutenção: 6 Meses - R$ 800,00 × 6 = R$ 4.800,00
 
-**Infraestrutura e Ferramentas**
-- Hospedagem e domínio (1 ano): R$ 500,00
-- Banco de dados MySQL: R$ 300,00
-- Ferramentas de desenvolvimento: R$ 200,00
+### Lucro:
+35% sobre o total
 
-**Custos Adicionais**
-- Testes e validação: R$ 800,00
-- Documentação e manuais: R$ 600,00
-- Deploy e configuração inicial: R$ 400,00
-
-### **Valor Total do Projeto: R$ 17.600,00**
+### **Valor Total do Projeto: R$ 35.775,00*
 
 *Valores baseados no mercado brasileiro (2025) para desenvolvimento de sistemas web personalizados*
 
