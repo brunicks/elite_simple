@@ -322,8 +322,6 @@ Análise de Custos de Desenvolvimento
 
 ### **Valor Total do Projeto: R$ 35.775,00*
 
-*Valores baseados no mercado brasileiro (2025) para desenvolvimento de sistemas web personalizados*
-
 ---
 
 **Elite Motors** - Sistema completo de concessionária com foco na experiência do usuário e eficiência administrativa.
