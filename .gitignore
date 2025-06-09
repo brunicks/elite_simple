@@ -1,15 +1,37 @@
-# Uploads (arquivos grandes)
+# Arquivos de configuração sensíveis
+config/database.php
+app/Config/EmailConfig.php
+
+# Uploads de usuários (imagens podem ser grandes)
 public/uploads/cars/*
 public/uploads/users/*
 public/uploads/temp/*
+!public/uploads/README.txt
 !public/uploads/*/.htaccess
 
-# Configurações pessoais
+# Configurações pessoais e ambiente
 .env*
 *.local.*
+
+# Logs e cache
+*.log
+cache/
+temp/
 
 # Sistema/Editor
 .DS_Store
 Thumbs.db
 .vscode/
 .idea/
+*.swp
+*.swo
+*~
+
+# Dependências
+vendor/
+node_modules/
+
+# Arquivos temporários
+*.tmp
+*.bak
+*.backup

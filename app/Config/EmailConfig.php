@@ -6,9 +6,9 @@ class EmailConfig {    // SMTP Configuration - Configure com seus dados
         'host' => 'smtp.gmail.com',
         'port' => 587,
         'encryption' => 'tls',
-        'username' => '', // ← CONFIGURE: Seu email Gmail
-        'password' => '', // ← CONFIGURE: Sua senha de app Gmail (16 caracteres)
-        'from_email' => '', // ← CONFIGURE: Email do remetente (mesmo que username)
+        'username' => 'noreplyelitemotors@gmail.com', // ← CONFIGURE: Seu email Gmail
+        'password' => 'lnwxhbxngmybczsm', // ← CONFIGURE: Sua senha de app Gmail (16 caracteres)
+        'from_email' => 'noreplyelitemotors@gmail.com', // ← CONFIGURE: Email do remetente (mesmo que username)
         'from_name' => 'Elite Motors - Sistema de Carros'
     ];
     
