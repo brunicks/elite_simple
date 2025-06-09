@@ -2,35 +2,52 @@
 
 Sistema profissional de gestão de concessionária desenvolvido em PHP com arquitetura MVC, oferecendo experiência completa para clientes e administradores.
 
-## ⚡ Início Rápido
+## ⚡ Como Rodar a Ferramenta
 
-### Requisitos
-- PHP 7.4+
-- MySQL 5.7+
+### Requisitos do Sistema
+- PHP 7.4 ou superior
+- MySQL 5.7 ou superior
 - Servidor web (Apache/Nginx) ou PHP built-in server
+- Git (para clonar o repositório)
 
-### Instalação
+### Passo a Passo para Instalação
 
-1. **Clone ou baixe o projeto**
+1. **Clone o repositório do GitHub**
 ```bash
-# Configure a base URL no arquivo de configuração
-config/config.php
+git clone https://github.com/SEU_USUARIO/elite-motors.git
+cd elite-motors
 ```
 
 2. **Configure o banco de dados**
 ```bash
-# Importe o arquivo SQL (se disponível) ou use as configurações em:
-config/database.php
+# 1. Crie um banco de dados MySQL
+# 2. Importe o arquivo: docs/database.sql
+# 3. Configure as credenciais em: config/config.php
 ```
 
-3. **Inicie o servidor**
+3. **Configure as permissões de upload**
 ```bash
-# Para desenvolvimento local
+# Garanta que as pastas tenham permissão de escrita:
+public/uploads/cars/
+public/uploads/users/
+public/uploads/temp/
+```
+
+4. **Inicie o servidor**
+```bash
+# Navegue até a pasta public
 cd public
+
+# Execute o servidor PHP
 php -S localhost:8080
 
-# Acesse: http://localhost:8080
+# Acesse no navegador: http://localhost:8080
 ```
+
+### Configuração Adicional
+- **URL Base**: Edite `config/config.php` e ajuste `BASE_URL` conforme seu ambiente
+- **Email**: Configure `app/Config/EmailConfig.php` para notificações (opcional)
+- **Debug**: Mantenha `DEBUG = true` durante desenvolvimento
 
 ## 🎯 Funcionalidades Principais
 
@@ -49,33 +66,81 @@ php -S localhost:8080
 - **Filtros Administrativos**: Visualizar carros ativos, inativos ou todos
 - **Soft Delete**: Sistema de desativação reversível de veículos
 
-## 🏗️ Arquitetura
+## 🏗️ Tecnologias Utilizadas
 
-### Estrutura MVC
-```
-app/
-├── Controllers/    # Lógica de controle
-├── Models/        # Modelos de dados
-├── Core/          # Classes base do sistema
-└── Services/      # Serviços auxiliares
+### Arquitetura do Sistema
+- **Padrão MVC**: Model-View-Controller para separação de responsabilidades
+- **PHP Orientado a Objetos**: Classes e herança para organização do código
+- **Roteamento Customizado**: Sistema de URLs amigáveis sem frameworks externos
+- **Autoloading**: Carregamento automático de classes
+- **Padrão Singleton**: Para conexão com banco de dados
+- **Session Management**: Gerenciamento de sessões PHP para autenticação
 
-views/
-├── layouts/       # Templates base
-├── home/         # Página inicial
-├── cars/         # Catálogo e detalhes
-└── dashboard/    # Painéis de usuário/admin
+### Frontend
+- **HTML5**: Estrutura semântica moderna
+- **CSS3**: Estilização avançada com Flexbox e Grid
+- **JavaScript Vanilla**: Interações dinâmicas sem dependências
+- **AJAX**: Requisições assíncronas para favoritos e comparações
+- **Design Responsivo**: Mobile-first com breakpoints otimizados
+- **Font Awesome**: Iconografia profissional
 
-public/           # Ponto de entrada
-config/          # Configurações do sistema
-docs/            # Documentação técnica
-```
+### Backend
+- **PHP 7.4+**: Linguagem principal do servidor
+- **PDO**: Abstração de banco de dados com prepared statements
+- **BCrypt**: Criptografia de senhas
+- **File Upload**: Sistema de upload otimizado para imagens
+- **Error Handling**: Tratamento de erros personalizado
 
 ### Banco de Dados
-- **carros**: Estoque de veículos com dados técnicos completos
-- **usuarios**: Sistema de autenticação com níveis de acesso
-- **favoritos**: Relacionamento usuário-veículo para favoritos
+O sistema utiliza **MySQL 5.7+** com a seguinte estrutura:
+
+#### Tabelas Principais:
+- **carros**: Armazena informações completas dos veículos
+  - Dados básicos: marca, modelo, ano, preço, quilometragem
+  - Especificações técnicas: motor, potência, torque, consumo
+  - Status: campo 'ativo' para soft delete
+  - Imagens: campo para armazenar nome do arquivo
+
+- **usuarios**: Sistema de autenticação
+  - Informações pessoais: nome, email, telefone
+  - Credenciais: senha criptografada com bcrypt
+  - Níveis de acesso: tipo ('admin' ou 'user')
+  - Timestamps: created_at e updated_at
+
+- **favoritos**: Relacionamento muitos-para-muitos
+  - usuario_id e carro_id como chaves estrangeiras
+  - Constraint UNIQUE para evitar duplicatas
+  - Timestamp de quando foi favoritado
+
 - **recently_viewed**: Histórico de visualizações
-- **financing_simulations**: Simulações de financiamento salvas
+  - Rastreamento automático de carros visitados
+  - Limpeza automática (máximo 10 por usuário)
+  - Ordenação por data de visualização
+
+- **financing_simulations**: Simulações de financiamento
+  - Valores calculados e salvos para histórico
+  - Parâmetros: valor do carro, entrada, prazo, juros
+  - Vinculação opcional com carro específico
+
+#### Relacionamentos:
+- Users → Favorites (1:N)
+- Cars → Favorites (1:N)
+- Users → Recently Viewed (1:N)
+- Users → Financing Simulations (1:N)
+- Cars → Financing Simulations (1:N)
+
+#### Índices e Performance:
+- Índices em chaves estrangeiras
+- Índice composto em favoritos (usuario_id, carro_id)
+- Índice em campos de busca frequente (marca, modelo)
+
+### Segurança
+- **Prepared Statements**: Proteção contra SQL Injection
+- **Password Hashing**: BCrypt para senhas
+- **Session Security**: Verificação de autenticação
+- **Input Sanitization**: Limpeza de dados de entrada
+- **File Upload Validation**: Verificação de tipos de arquivo
+- **CSRF Protection**: Tokens para formulários críticos
 
 ## 🚀 Principais Recursos
 
@@ -196,6 +261,36 @@ Dashboard ↔ Catálogo ↔ Favoritos ↔ Detalhes do Carro
 Dashboard Admin → Gestão de Carros/Usuários → Estatísticas
 ```
 
+## 👥 Divisão de Papéis da Equipe
+
+### Desenvolvimento e Responsabilidades
+
+**[Nome do Responsável]** - *Desenvolvedor Full Stack Principal*
+- Arquitetura do sistema MVC
+- Implementação do backend em PHP
+- Sistema de autenticação e autorização
+- Integração com banco de dados MySQL
+
+**[Nome do Responsável]** - *Frontend Developer*
+- Interface do usuário e experiência (UI/UX)
+- Design responsivo com CSS3 e JavaScript
+- Sistema de favoritos AJAX
+- Componentes visuais e animações
+
+**[Nome do Responsável]** - *Database Administrator*
+- Modelagem e estrutura do banco de dados
+- Otimização de consultas e índices
+- Sistema de backup e recuperação
+- Performance e segurança dos dados
+
+**[Nome do Responsável]** - *Quality Assurance & Documentation*
+- Testes funcionais e de usabilidade
+- Documentação técnica e manual de usuário
+- Validação de requisitos
+- Deploy e configuração de ambiente
+
+*Nota: Substitua os nomes conforme sua equipe*
+
 ## 📞 Suporte
 
 O sistema Elite Motors é auto-documentado com:
@@ -203,6 +298,30 @@ O sistema Elite Motors é auto-documentado com:
 - Mensagens de erro descritivas
 - Tooltips e textos de ajuda
 - Validações em tempo real
+
+## 💰 Custo da Ferramenta
+
+### Análise de Custos de Desenvolvimento
+
+**Desenvolvimento do Sistema (200 horas de trabalho)**
+- Desenvolvedor Full Stack Principal: 80h × R$ 80/h = R$ 6.400,00
+- Frontend Developer: 60h × R$ 70/h = R$ 4.200,00
+- Database Administrator: 40h × R$ 75/h = R$ 3.000,00
+- Quality Assurance & Documentation: 20h × R$ 60/h = R$ 1.200,00
+
+**Infraestrutura e Ferramentas**
+- Hospedagem e domínio (1 ano): R$ 500,00
+- Banco de dados MySQL: R$ 300,00
+- Ferramentas de desenvolvimento: R$ 200,00
+
+**Custos Adicionais**
+- Testes e validação: R$ 800,00
+- Documentação e manuais: R$ 600,00
+- Deploy e configuração inicial: R$ 400,00
+
+### **Valor Total do Projeto: R$ 17.600,00**
+
+*Valores baseados no mercado brasileiro (2025) para desenvolvimento de sistemas web personalizados*
 
 ---
 
