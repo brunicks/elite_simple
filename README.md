@@ -320,13 +320,6 @@ Análise de Custos de Desenvolvimento
 ### Lucro:
 35% sobre o total
 
-<<<<<<< HEAD
-
 ### **Valor Total do Projeto: R$ 35.775,00*
-=======
-### **Valor Total do Projeto: R$ 35.775,00*
-
----
->>>>>>> 9db36bd7145a4104682d1e4cf8e7aa078430af4e
 
 **Elite Motors** - Sistema completo de concessionária com foco na experiência do usuário e eficiência administrativa.
