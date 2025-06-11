@@ -265,31 +265,29 @@ Dashboard Admin → Gestão de Carros/Usuários → Estatísticas
 
 ### Desenvolvimento e Responsabilidades
 
-**[Nome do Responsável]** - *Desenvolvedor Full Stack Principal*
+**Lorenzo Bonatto** - *Desenvolvedor Full Stack Principal*
 - Arquitetura do sistema MVC
 - Implementação do backend em PHP
 - Sistema de autenticação e autorização
 - Integração com banco de dados MySQL
 
-**[Nome do Responsável]** - *Frontend Developer*
+**Bruno Santos** - *Frontend Developer*
 - Interface do usuário e experiência (UI/UX)
 - Design responsivo com CSS3 e JavaScript
 - Sistema de favoritos AJAX
 - Componentes visuais e animações
 
-**[Nome do Responsável]** - *Database Administrator*
+**Andre Marcondes Ribas** - *Database Administrator*
 - Modelagem e estrutura do banco de dados
 - Otimização de consultas e índices
 - Sistema de backup e recuperação
 - Performance e segurança dos dados
 
-**[Nome do Responsável]** - *Quality Assurance & Documentation*
+**Lorenzo Bonatto de Paula e Andre Marcondes Ribas** - *Quality Assurance & Documentation*
 - Testes funcionais e de usabilidade
 - Documentação técnica e manual de usuário
 - Validação de requisitos
 - Deploy e configuração de ambiente
-
-*Nota: Substitua os nomes conforme sua equipe*
 
 ## 📞 Suporte
 
@@ -306,9 +304,9 @@ Análise de Custos de Desenvolvimento
 - Desenvolvedor Full Stack: 80h × R$ 80,00 = R$ 6.400,00
 - Desenvolvedor Front-End: 60h × R$ 70,00 = R$ 4.200,00
 - Administrador de Banco de Dados: 40h × R$ 75,00 = R$ 3.000,00
--  de Qualidade: 20h × R$ 60,00 = R$ 1.200,00
+- Analista de Qualidade: 20h × R$ 60,00 = R$ 1.200,00
 - Gerente de Projeto: 20h × R$ 85,00 = R$ 1.700,00
-- /UI Designer: 30h × R$ 70,00 = R$ 2.100,00
+- UX/UI Designer: 30h × R$ 70,00 = R$ 2.100,00
 - Testes automatizados: 10h × R$ 70,00 = R$ 700,00
 - Ferramentas e Licenças: Custo fixo - R$ 500,00
 
@@ -322,4 +320,5 @@ Análise de Custos de Desenvolvimento
 
 ### **Valor Total do Projeto: R$ 35.775,00*
 
-**Elite Motors** - Sistema completo de concessionária com foco na experiência do usuário e eficiência administrativa.
+**Elite Motors**
+- Sistema completo de concessionária com foco na experiência do usuário e eficiência administrativa.
