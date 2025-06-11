@@ -187,35 +187,6 @@ O sistema utiliza **MySQL 5.7+** com a seguinte estrutura:
 - **Loading States**: Indicadores de progresso para ações
 - **Alertas Informativos**: Notificações de sucesso/erro
 
-## 🎛️ Painel Administrativo
-
-### Funcionalidades Principais
-- **Vista Geral**: Estatísticas de carros ativos/inativos
-- **Busca Avançada**: Localizar veículos por qualquer critério
-- **Filtros de Status**: Visualizar apenas ativos, inativos ou todos
-- **Ações em Lote**: Operações múltiplas para eficiência
-- **Gestão Visual**: Cards informativos com ações diretas
-
-### Gestão de Veículos
-- **Cadastro Completo**: Formulários com todos os dados técnicos
-- **Upload de Imagens**: Sistema drag-and-drop otimizado
-- **Edição Flexível**: Modificar qualquer aspecto do veículo
-- **Soft Delete**: Desativar temporariamente sem perder dados
-
-## 📊 Recursos do Dashboard
-
-### Para Usuários
-- **Estatísticas Pessoais**: Contadores de favoritos, simulações, visualizações
-- **Calculadora Integrada**: Financiamento com base nos carros do estoque
-- **Histórico Visual**: Carros visitados com imagens em carousel
-- **Ações Rápidas**: Links diretos para funcionalidades principais
-
-### Para Administradores
-- **Métricas de Sistema**: Total de carros, usuários, atividade
-- **Gestão Unificada**: Todos os controles em uma interface
-- **Relatórios Visuais**: Gráficos e indicadores de performance
-- **Acesso Rápido**: Botões para todas as funcionalidades administrativas
-
 ## 👥 Divisão de Papéis da Equipe
 
 ### Desenvolvimento e Responsabilidades
