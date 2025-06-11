@@ -14,7 +14,7 @@ Sistema profissional de gestão de concessionária desenvolvido em PHP com arqui
 
 1. **Clone o repositório do GitHub**
 ```bash
-git clone https://github.com/SEU_USUARIO/elite-motors.git
+git clone https://github.com/brunicks/elite-motors.git
 cd elite-motors
 ```
 
@@ -129,11 +129,6 @@ O sistema utiliza **MySQL 5.7+** com a seguinte estrutura:
 - Users → Financing Simulations (1:N)
 - Cars → Financing Simulations (1:N)
 
-#### Índices e Performance:
-- Índices em chaves estrangeiras
-- Índice composto em favoritos (usuario_id, carro_id)
-- Índice em campos de busca frequente (marca, modelo)
-
 ### Segurança
 - **Prepared Statements**: Proteção contra SQL Injection
 - **Password Hashing**: BCrypt para senhas
@@ -221,23 +216,6 @@ O sistema utiliza **MySQL 5.7+** com a seguinte estrutura:
 - **Relatórios Visuais**: Gráficos e indicadores de performance
 - **Acesso Rápido**: Botões para todas as funcionalidades administrativas
 
-## 🔄 Fluxo de Navegação
-
-### Usuários Não Logados
-```
-Home → Catálogo → Modal de Login → Dashboard de Usuário
-```
-
-### Usuários Logados
-```
-Dashboard ↔ Catálogo ↔ Favoritos ↔ Detalhes do Carro
-```
-
-### Administradores
-```
-Dashboard Admin → Gestão de Carros/Usuários → Estatísticas
-```
-
 ## 👥 Divisão de Papéis da Equipe
 
 ### Desenvolvimento e Responsabilidades
@@ -275,7 +253,7 @@ O sistema Elite Motors é auto-documentado com:
 - Validações em tempo real
 
 ## 💰 Custo da Ferramenta
-Análise de Custos de Desenvolvimento
+Análise de Custos de Desenvolvimento (SIMULAÇÂO)
 
 ### Desenvolvimento do Sistema:
 - Desenvolvedor Full Stack: 80h × R$ 80,00 = R$ 6.400,00
