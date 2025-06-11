@@ -14,7 +14,7 @@ Sistema profissional de gestão de concessionária desenvolvido em PHP com arqui
 
 1. **Clone o repositório do GitHub**
 ```bash
-git clone https://github.com/brunicks/elite-motors.git
+git clone https://github.com/brunicks/elite_simple.git
 cd elite-motors
 ```
 
@@ -25,15 +25,7 @@ cd elite-motors
 # 3. Configure as credenciais em: config/config.php
 ```
 
-3. **Configure as permissões de upload**
-```bash
-# Garanta que as pastas tenham permissão de escrita:
-public/uploads/cars/
-public/uploads/users/
-public/uploads/temp/
-```
-
-4. **Inicie o servidor**
+3. **Inicie o servidor**
 ```bash
 # Navegue até a pasta public
 cd public
