@@ -30,12 +30,6 @@ class EmailService {
             $this->mailer->SMTPSecure = $this->config['encryption'];
             $this->mailer->Port       = $this->config['port'];
             
-            // Debug settings - only if debug is enabled
-            if (isset($this->config['debug']) && $this->config['debug']) {
-                $this->mailer->SMTPDebug = SMTP::DEBUG_SERVER;
-                $this->mailer->Debugoutput = 'error_log';
-            }
-            
             // Default from
             $this->mailer->setFrom($this->config['from_email'], $this->config['from_name']);
             

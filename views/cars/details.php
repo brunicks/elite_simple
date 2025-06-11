@@ -40,6 +40,7 @@ include_once ROOT . '/views/layouts/header.php';
     grid-template-columns: 1fr 1fr;
     gap: 30px;
     margin-bottom: 30px;
+    align-items: start;
 }
 
 .car-image-section {
@@ -48,26 +49,63 @@ include_once ROOT . '/views/layouts/header.php';
     padding: 20px;
     border: 1px solid rgba(212, 175, 55, 0.3);
     backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 440px;
 }
 
 .car-main-image {
     width: 100%;
+    max-width: 100%;
+    height: 400px;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    background: #2a2a2a;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .car-main-image img {
     width: 100%;
-    height: 400px;
-    object-fit: cover;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
     transition: opacity 0.3s ease;
+    background: linear-gradient(135deg, #2a2a2a 0%, #3a3a3a 100%);
+}
+
+/* Estilo específico para placeholders */
+.car-main-image img[src*="car-placeholder"] {
+    object-fit: contain;
+    padding: 40px;
+    background: linear-gradient(135deg, #2a2a2a 0%, #3a3a3a 100%);
+}
+
+/* Para imagens reais, usar contain para se ajustar no box */
+.car-main-image img:not([src*="car-placeholder"]) {
+    object-fit: contain;
+}
+
+/* Loading state para imagens */
+.car-main-image img {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.car-main-image img.loaded {
+    opacity: 1;
 }
 
 .car-info-section {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    min-height: 440px;
+    justify-content: flex-start;
 }
 
 .price-card {
@@ -77,6 +115,7 @@ include_once ROOT . '/views/layouts/header.php';
     border: 2px solid rgba(212, 175, 55, 0.5);
     backdrop-filter: blur(10px);
     text-align: center;
+    flex-shrink: 0;
 }
 
 .price-main {
@@ -178,6 +217,8 @@ include_once ROOT . '/views/layouts/header.php';
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 15px;
+    margin-top: auto;
+    padding-top: 20px;
 }
 
 .btn-favorite-large, .btn-comparison, .btn-whatsapp, .btn-share {
@@ -401,6 +442,11 @@ include_once ROOT . '/views/layouts/header.php';
 @media (max-width: 1024px) {
     .car-details-grid {
         grid-template-columns: 1fr;
+        align-items: stretch;
+    }
+    
+    .car-info-section {
+        min-height: auto;
     }
     
     .additional-info {
@@ -428,13 +474,24 @@ include_once ROOT . '/views/layouts/header.php';
     .page-header h1 {
         font-size: 2em;
     }
-    
-    .price-value {
+      .price-value {
         font-size: 2em;
     }
     
+    .car-image-section {
+        height: 340px;
+    }
+    
+    .car-main-image {
+        height: 300px;
+    }
+    
     .car-main-image img {
-        height: 250px;
+        height: 100%;
+    }
+    
+    .car-info-section {
+        min-height: auto;
     }
 }
 
@@ -841,9 +898,23 @@ function showManualCopy(url) {
 document.addEventListener('DOMContentLoaded', function() {
     const carImage = document.querySelector('.car-main-image img');
     if (carImage) {
-        carImage.addEventListener('load', function() {
+        // Função para quando a imagem carrega
+        function onImageLoad() {
+            this.classList.add('loaded');
             this.style.opacity = '1';
-        });
+        }
+        
+        // Se a imagem já carregou
+        if (carImage.complete && carImage.naturalHeight !== 0) {
+            onImageLoad.call(carImage);
+        } else {
+            // Aguardar o carregamento
+            carImage.addEventListener('load', onImageLoad);
+            carImage.addEventListener('error', function() {
+                this.style.opacity = '1';
+                this.classList.add('loaded');
+            });
+        }
         
         // Adicionar loading state se a imagem ainda não carregou
         if (!carImage.complete) {

@@ -228,22 +228,29 @@ class AuthController extends Controller {
         $token = $_POST['token'] ?? '';
         $senha = $_POST['senha'] ?? '';
         $confirmar_senha = $_POST['confirmar_senha'] ?? '';
-        
+
         if (empty($token) || empty($senha) || empty($confirmar_senha)) {
             $_SESSION['error'] = 'Por favor, preencha todos os campos.';
             $this->redirect(BASE_URL . "auth/reset_password?token=" . $token);
         }
-        
+
         if ($senha !== $confirmar_senha) {
             $_SESSION['error'] = 'As senhas não coincidem.';
             $this->redirect(BASE_URL . "auth/reset_password?token=" . $token);
         }
-        
+
         if (strlen($senha) < 3) {
             $_SESSION['error'] = 'A senha deve ter pelo menos 3 caracteres.';
             $this->redirect(BASE_URL . "auth/reset_password?token=" . $token);
         }
-        
+
+        // Verificar se a nova senha é igual à anterior
+        $user = $this->userModel->verifyResetToken($token);
+        if ($user && password_verify($senha, $user['senha'])) {
+            $_SESSION['error'] = 'A nova senha não pode ser igual à senha atual.';
+            $this->redirect(BASE_URL . "auth/reset_password?token=" . $token);
+        }
+
         // Resetar senha
         if ($this->userModel->resetPassword($token, $senha)) {
             $_SESSION['success'] = 'Senha alterada com sucesso! Faça login com sua nova senha.';

@@ -10,16 +10,19 @@ include_once ROOT . '/views/layouts/header.php';
     min-height: 100vh;
     padding: 20px;
     color: #ffffff;
+    display: block;
+    width: 100%;
 }
 
 .favorites-hero {
-    background: linear-gradient(135deg, #d4af37 0%, #f4e18f 50%, #d4af37 100%);
-    color: #1a1a1a;
+    background: linear-gradient(135deg,rgb(231, 204, 114) 0%, #f4e18f 50%, #d4af37 100%);
+    color: #000000;
     padding: 30px;
     border-radius: 12px;
     margin-bottom: 30px;
-    box-shadow: 0 8px 32px rgba(212, 175, 55, 0.3);
+    box-shadow: 0 8px 32px rgba(212, 175, 55, 0.4);
     text-align: center;
+    border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .favorites-hero h1 {
@@ -30,11 +33,15 @@ include_once ROOT . '/views/layouts/header.php';
     align-items: center;
     justify-content: center;
     gap: 15px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    color: #000000;
 }
 
 .favorites-hero p {
     font-size: 1.1em;
     margin-bottom: 20px;
+    color: #1a1a1a;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
 }
 
 .favorites-actions {
@@ -73,9 +80,13 @@ include_once ROOT . '/views/layouts/header.php';
 
 .favorites-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 30px;
-    margin-bottom: 40px;
+    margin-bottom: 0;
+    justify-items: stretch;
+    align-items: stretch;
+    width: 100%;
+    grid-auto-flow: row;
 }
 
 .favorite-card {
@@ -87,6 +98,10 @@ include_once ROOT . '/views/layouts/header.php';
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
     position: relative;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    min-height: 520px;
 }
 
 .favorite-card::before {
@@ -113,14 +128,30 @@ include_once ROOT . '/views/layouts/header.php';
 
 .favorite-card-image {
     position: relative;
-    height: 220px;
+    height: 250px;
     overflow: hidden;
+    background: #2a2a2a;
+    border-radius: 15px 15px 0 0;
 }
 
 .favorite-card-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center;
+    transition: transform 0.3s ease;
+    border-radius: 15px 15px 0 0;
+    background: linear-gradient(135deg, #2a2a2a 0%, #3a3a3a 100%);
+}
+
+.favorite-card-image img[src*="car-placeholder"] {
+    object-fit: contain;
+    padding: 20px;
+    background: linear-gradient(135deg, #2a2a2a 0%, #3a3a3a 100%);
+}
+
+.favorite-card:hover .favorite-card-image img {
+    transform: scale(1.05);
 }
 
 .car-year-badge {
@@ -137,6 +168,10 @@ include_once ROOT . '/views/layouts/header.php';
 
 .favorite-card-content {
     padding: 25px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .favorite-car-title h3 {
@@ -156,13 +191,17 @@ include_once ROOT . '/views/layouts/header.php';
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 15px;
-    margin-bottom: 20px;
+    margin: 20px 0;
 }
 
 .favorite-detail-item {
     display: flex;
     flex-direction: column;
     gap: 5px;
+    padding: 12px;
+    background: rgba(26, 26, 26, 0.5);
+    border-radius: 8px;
+    border: 1px solid rgba(212, 175, 55, 0.2);
 }
 
 .favorite-detail-item i {
@@ -181,11 +220,12 @@ include_once ROOT . '/views/layouts/header.php';
 }
 
 .favorite-car-price {
-    margin-bottom: 25px;
+    margin: 20px 0;
     padding: 20px;
     background: rgba(26, 26, 26, 0.8);
-    border-radius: 8px;
+    border-radius: 12px;
     border: 1px solid rgba(212, 175, 55, 0.3);
+    text-align: center;
 }
 
 .favorite-price-value {
@@ -207,6 +247,9 @@ include_once ROOT . '/views/layouts/header.php';
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: auto;
+    padding-top: 15px;
 }
 
 .modern-btn {
@@ -254,6 +297,103 @@ include_once ROOT . '/views/layouts/header.php';
     background: #d4af37;
     color: #1a1a1a;
 }
+
+/* Paginação dos Favoritos */
+.favorites-pagination-wrapper {
+    width: 100%;
+    display: block;
+    text-align: center;
+    margin: 40px auto 20px auto;
+    clear: both;
+    grid-column: 1 / -1;
+}
+
+.favorites-pagination {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.favorites-pagination-btn,
+.favorites-pagination-current {
+    padding: 12px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    min-width: 45px;
+    justify-content: center;
+}
+
+.favorites-pagination-btn {
+    background: rgba(45, 45, 45, 0.8);
+    color: #ffffff;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+.favorites-pagination-btn:hover {
+    background: rgba(212, 175, 55, 0.2);
+    border-color: rgba(212, 175, 55, 0.6);
+    color: #d4af37;
+    transform: translateY(-2px);
+}
+
+.favorites-pagination-current {
+    background: linear-gradient(135deg, #d4af37 0%, #f4e18f 100%);
+    color: #1a1a1a;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+}
+
+/* Responsivo para paginação */
+@media (max-width: 768px) {
+    .favorites-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .favorite-card {
+        min-height: 480px;
+    }
+    
+    .favorite-card-image {
+        height: 220px;
+    }
+    
+    .favorite-car-details {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .favorite-card-actions {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .modern-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .favorites-pagination {
+        gap: 4px;
+    }
+    
+    .favorites-pagination-btn,
+    .favorites-pagination-current {
+        padding: 10px 14px;
+        font-size: 0.9em;
+    }
+    
+    .favorites-pagination-wrapper {
+        margin: 30px 0 15px 0;
+    }
+}
 </style>
 
 <main class="favorites-container">
@@ -297,6 +437,15 @@ include_once ROOT . '/views/layouts/header.php';
         </div>
     </div>
 
+    <?php
+    // Paginação dos favoritos
+    $perPage = 4;
+    $currentPage = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
+    $totalFavorites = count($favorites);
+    $totalPages = max(1, ceil($totalFavorites / $perPage));
+    $start = ($currentPage - 1) * $perPage;
+    $favoritesPage = array_slice($favorites, $start, $perPage);
+    ?>
     <?php if (empty($favorites)): ?>
         <!-- Empty State -->
         <div class="empty-favorites">
@@ -319,7 +468,7 @@ include_once ROOT . '/views/layouts/header.php';
     <?php else: ?>
         <!-- Grid de Favoritos -->
         <div class="favorites-grid">
-            <?php foreach ($favorites as $car): ?>
+            <?php foreach ($favoritesPage as $car): ?>
                 <div class="favorite-card">
                     <div class="favorite-card-image">                        <img src="<?= $car['imagem'] ? BASE_URL . 'uploads/cars/' . htmlspecialchars($car['imagem']) : BASE_URL . 'assets/images/car-placeholder.jpg' ?>" 
                              alt="<?= htmlspecialchars($car['modelo']) ?>"
@@ -369,18 +518,54 @@ include_once ROOT . '/views/layouts/header.php';
                         </div>
                     </div>
                 </div>
-            <?php endforeach; ?>
+            <?php endforeach; ?>        </div>
+        
+        <!-- Paginação - Posicionada abaixo do grid -->
+        <?php if ($totalPages > 1): ?>
+        <div class="favorites-pagination-wrapper">
+            <div class="favorites-pagination">
+                <?php if ($currentPage > 1): ?>
+                    <a href="?page=1" class="favorites-pagination-btn" title="Primeira página">
+                        <i class="fas fa-angle-double-left"></i>
+                    </a>
+                    <a href="?page=<?= $currentPage - 1 ?>" class="favorites-pagination-btn" title="Página anterior">
+                        <i class="fas fa-angle-left"></i>
+                    </a>
+                <?php endif; ?>
+                
+                <?php
+                $startPage = max(1, $currentPage - 2);
+                $endPage = min($totalPages, $currentPage + 2);
+                for ($i = $startPage; $i <= $endPage; $i++):
+                ?>
+                    <?php if ($i == $currentPage): ?>
+                        <span class="favorites-pagination-current"><?= $i ?></span>
+                    <?php else: ?>
+                        <a href="?page=<?= $i ?>" class="favorites-pagination-btn"><?= $i ?></a>
+                    <?php endif; ?>
+                <?php endfor; ?>
+                
+                <?php if ($currentPage < $totalPages): ?>
+                    <a href="?page=<?= $currentPage + 1 ?>" class="favorites-pagination-btn" title="Próxima página">
+                        <i class="fas fa-angle-right"></i>
+                    </a>
+                    <a href="?page=<?= $totalPages ?>" class="favorites-pagination-btn" title="Última página">
+                        <i class="fas fa-angle-double-right"></i>
+                    </a>
+                <?php endif; ?>
+            </div>
         </div>
+        <?php endif; ?>
     <?php endif; ?>
 </main>
 
 <script>
-// Função para toggle de favoritos
+// Função para toggle de favoritos com atualização global
 function toggleFavorite(carId, button) {
     const originalContent = button.innerHTML;
     button.disabled = true;
     button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processando...';
-    
+
     fetch('<?= BASE_URL ?>favorite/toggle', {
         method: 'POST',
         headers: {
@@ -405,6 +590,10 @@ function toggleFavorite(carId, button) {
                     }
                 }, 300);
             }
+            // Atualizar ícones de coração em outras páginas (catálogo/detalhes)
+            updateFavoriteIcons(carId, false);
+        } else if (data.action === 'added') {
+            updateFavoriteIcons(carId, true);
         } else {
             button.innerHTML = originalContent;
             button.disabled = false;
@@ -416,6 +605,23 @@ function toggleFavorite(carId, button) {
         button.innerHTML = originalContent;
         button.disabled = false;
         alert('Erro ao processar favorito');
+    });
+}
+
+// Atualiza todos os ícones de favoritos na página (catálogo, detalhes, etc)
+function updateFavoriteIcons(carId, isFavorited) {
+    // Catálogo: botões com data-car-id
+    document.querySelectorAll('[data-car-id="' + carId + '"]').forEach(btn => {
+        if (isFavorited) {
+            btn.classList.add('favorited');
+            btn.title = 'Remover dos favoritos';
+            btn.innerHTML = '<i class="fas fa-heart"></i> Favoritado';
+        } else {
+            btn.classList.remove('favorited');
+            btn.title = 'Adicionar aos favoritos';
+            btn.innerHTML = '<i class="fas fa-heart"></i> Favoritar';
+        }
+        btn.disabled = false;
     });
 }
 </script>

@@ -725,7 +725,7 @@ function toggleFavorite(carId, button) {
     const baseUrl = window.BASE_URL || '/';
     // const action = isFavorited ? 'remove' : 'add'; // No longer needed for toggle
     
-    fetch(baseUrl + 'favorite/toggle', { // Corrigido para o endpoint correto
+    fetch(baseUrl + 'favorite/toggle', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -735,15 +735,15 @@ function toggleFavorite(carId, button) {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            // Update button status based on the action performed (returned by the server)
-            if (data.action === 'removed') { // Check action from server response
+            // Atualiza apenas o ícone do coração, sem texto
+            if (data.action === 'removed') {
                 button.classList.remove('favorited');
-                button.innerHTML = '<i class="fas fa-heart"></i> Favoritar';
+                button.innerHTML = '<i class="fas fa-heart"></i>';
                 button.title = 'Adicionar aos favoritos';
                 showSuccessModal(data.message || 'Veículo removido dos favoritos!');
-            } else if (data.action === 'added') { // Check action from server response
+            } else if (data.action === 'added') {
                 button.classList.add('favorited');
-                button.innerHTML = '<i class="fas fa-heart"></i> Favoritado';
+                button.innerHTML = '<i class="fas fa-heart"></i>';
                 button.title = 'Remover dos favoritos';
                 showSuccessModal(data.message || 'Veículo adicionado aos favoritos!');
             }
