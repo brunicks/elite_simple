@@ -192,29 +192,6 @@ O sistema utiliza **MySQL 5.7+** com a seguinte estrutura:
 - **Loading States**: Indicadores de progresso para ações
 - **Alertas Informativos**: Notificações de sucesso/erro
 
-## ⚙️ Configuração
-
-### Ambiente de Desenvolvimento
-```php
-// config/config.php
-define('DEBUG', true);
-define('BASE_URL', 'http://localhost:8080/');
-```
-
-### Email (Opcional)
-```php
-// Para notificações do sistema
-app/Config/EmailConfig.php
-```
-
-### Upload de Imagens
-```
-uploads/cars/    # Diretório para imagens dos veículos
-- Formatos: JPG, PNG, GIF
-- Redimensionamento automático
-- Fallback para placeholder se não houver imagem
-```
-
 ## 🎛️ Painel Administrativo
 
 ### Funcionalidades Principais
