@@ -131,8 +131,7 @@ class DashboardController extends Controller {
             echo json_encode(['success' => false, 'message' => 'Método não permitido']);
             return;
         }
-        
-        $data = [
+          $data = [
             'user_id' => $_SESSION['user_id'],
             'car_id' => $_POST['car_id'] ?? null,
             'car_name' => $_POST['car_name'] ?? 'Simulação Personalizada',
@@ -141,7 +140,8 @@ class DashboardController extends Controller {
             'interest_rate' => floatval($_POST['interest_rate'] ?? 0),
             'term_months' => intval($_POST['term_months'] ?? 0),
             'monthly_payment' => floatval($_POST['monthly_payment'] ?? 0),
-            'total_amount' => floatval($_POST['total_amount'] ?? 0)
+            'total_amount' => floatval($_POST['total_amount'] ?? 0),
+            'total_interest' => floatval($_POST['total_interest'] ?? 0)
         ];
         
         $result = $this->financingModel->createSimulation($data);

@@ -10,12 +10,11 @@ class FinancingSimulation extends Model {
     public function __construct() {
         parent::__construct();
     }
-    
-    // Criar nova simulação de financiamento
+      // Criar nova simulação de financiamento
     public function createSimulation($data) {
         try {
-            $sql = "INSERT INTO {$this->table} (user_id, car_id, car_name, car_price, down_payment, interest_rate, term_months, monthly_payment, total_amount, created_at) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
+            $sql = "INSERT INTO {$this->table} (user_id, car_id, car_name, car_price, down_payment, interest_rate, term_months, monthly_payment, total_amount, total_interest, created_at) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
             
             $stmt = $this->db->prepare($sql);
             return $stmt->execute([
@@ -27,7 +26,8 @@ class FinancingSimulation extends Model {
                 $data['interest_rate'],
                 $data['term_months'],
                 $data['monthly_payment'],
-                $data['total_amount']
+                $data['total_amount'],
+                $data['total_interest']
             ]);
         } catch (PDOException $e) {
             error_log("Erro ao criar simulação: " . $e->getMessage());
@@ -60,14 +60,13 @@ class FinancingSimulation extends Model {
             return false;
         }
     }
-    
-    // Atualizar simulação
+      // Atualizar simulação
     public function updateSimulation($id, $data, $userId) {
         try {
             $sql = "UPDATE {$this->table} 
                     SET car_id = ?, car_name = ?, car_price = ?, down_payment = ?, 
                         interest_rate = ?, term_months = ?, monthly_payment = ?, total_amount = ?, 
-                        updated_at = NOW() 
+                        total_interest = ?, updated_at = NOW() 
                     WHERE id = ? AND user_id = ?";
             
             $stmt = $this->db->prepare($sql);
@@ -80,6 +79,7 @@ class FinancingSimulation extends Model {
                 $data['term_months'],
                 $data['monthly_payment'],
                 $data['total_amount'],
+                $data['total_interest'],
                 $id,
                 $userId
             ]);

@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Banco de dados: `concessionaria`
+-- Banco de dados: `concessionaria2`
 --
 
 -- --------------------------------------------------------
@@ -138,6 +138,7 @@ CREATE TABLE `financing_simulations` (
   `term_months` int(11) NOT NULL,
   `monthly_payment` decimal(10,2) NOT NULL,
   `total_amount` decimal(10,2) NOT NULL,
+  `total_interest` decimal(10,2) NOT NULL DEFAULT 0.00 COMMENT 'Total de juros pagos (total_amount - car_price)',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

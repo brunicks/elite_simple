@@ -247,7 +247,7 @@ class AuthController extends Controller {
         // Verificar se a nova senha é igual à anterior
         $user = $this->userModel->verifyResetToken($token);
         if ($user && password_verify($senha, $user['senha'])) {
-            $_SESSION['error'] = 'A nova senha não pode ser igual à senha atual.';
+            $_SESSION['error'] = 'A nova senha não pode ser igual à senha anterior';
             $this->redirect(BASE_URL . "auth/reset_password?token=" . $token);
         }
 

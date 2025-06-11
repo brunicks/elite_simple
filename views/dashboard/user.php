@@ -425,8 +425,7 @@ include_once ROOT . '/views/layouts/header.php';
                                         🗑️
                                     </button>
                                 </div>
-                                
-                                <div class="simulation-details">
+                                  <div class="simulation-details">
                                     <div class="simulation-detail">
                                         <strong>Valor:</strong> R$ <?= number_format($simulation['car_price'], 2, ',', '.') ?>
                                     </div>
@@ -438,6 +437,12 @@ include_once ROOT . '/views/layouts/header.php';
                                     </div>
                                     <div class="simulation-detail">
                                         <strong>Prazo:</strong> <?= $simulation['term_months'] ?> meses
+                                    </div>
+                                    <div class="simulation-detail">
+                                        <strong>Total a Pagar:</strong> R$ <?= number_format($simulation['total_amount'], 2, ',', '.') ?>
+                                    </div>
+                                    <div class="simulation-detail">
+                                        <strong>Total de Juros:</strong> R$ <?= number_format($simulation['total_interest'] ?? ($simulation['total_amount'] - $simulation['car_price']), 2, ',', '.') ?>
                                     </div>
                                 </div>
                                 
@@ -537,6 +542,7 @@ function saveSimulation() {
     const formData = new FormData(document.getElementById('financingForm'));
     formData.append('monthly_payment', document.getElementById('monthlyPayment').textContent.replace(/[^\d,]/g, '').replace(',', '.'));
     formData.append('total_amount', document.getElementById('totalAmount').textContent.replace(/[^\d,]/g, '').replace(',', '.'));
+    formData.append('total_interest', document.getElementById('totalInterest').textContent.replace(/[^\d,]/g, '').replace(',', '.'));
     
     const carSelect = document.getElementById('carSelect');
     const carName = carSelect.value ? 
